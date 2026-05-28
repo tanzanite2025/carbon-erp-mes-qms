@@ -5617,6 +5617,9 @@ msgstr "पार्ट्स"
 msgid "Pass"
 msgstr "पास"
 
+msgid "Password"
+msgstr "पासवर्ड"
+
 msgid "Path"
 msgstr "पथ"
 

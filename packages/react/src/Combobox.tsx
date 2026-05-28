@@ -276,9 +276,7 @@ function VirtualizedCommand({
                     ? CSS.escape(item.label) + CSS.escape(item.helper ?? "")
                     : reactNodeToString(item.label)
                 }
-                onSelect={(e) => {
-                  e?.preventDefault?.();
-                  e?.stopPropagation?.();
+                onSelect={() => {
                   onChange?.(item.value);
                   setSearch("");
                   setOpen(false);

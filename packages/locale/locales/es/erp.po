@@ -5617,6 +5617,9 @@ msgstr "Piezas"
 msgid "Pass"
 msgstr "Aprobar"
 
+msgid "Password"
+msgstr "Contraseña"
+
 msgid "Path"
 msgstr "Ruta"
 

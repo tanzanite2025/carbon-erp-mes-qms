@@ -21,6 +21,7 @@
     "@internationalized/date": "catalog:",
     "@testing-library/dom": "8.20.1",
     "@types/dompurify": "2.4.0",
+    "@types/node": "20.19.39",
     "@types/react": "catalog:",
     "react": "catalog:",
     "tsup": "catalog:",

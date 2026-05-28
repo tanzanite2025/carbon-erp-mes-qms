@@ -5617,6 +5617,9 @@ msgstr "Części"
 msgid "Pass"
 msgstr "Zatwierdź"
 
+msgid "Password"
+msgstr "Hasło"
+
 msgid "Path"
 msgstr "Ścieżka"
 

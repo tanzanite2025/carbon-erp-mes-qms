@@ -641,6 +641,9 @@ msgstr "Teil"
 msgid "Passed Inspection"
 msgstr "Prüfung bestanden"
 
+msgid "Password"
+msgstr "Passwort"
+
 msgid "Pause"
 msgstr "Pause"
 

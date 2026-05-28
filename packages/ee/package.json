@@ -64,6 +64,7 @@
   },
   "devDependencies": {
     "@carbon/config": "workspace:*",
+    "@types/node": "20.19.39",
     "@types/nodemailer": "6.4.21",
     "@types/react": "catalog:",
     "typescript": "catalog:",

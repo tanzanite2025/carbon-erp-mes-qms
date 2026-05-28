@@ -5617,6 +5617,9 @@ msgstr "Peças"
 msgid "Pass"
 msgstr "Passar"
 
+msgid "Password"
+msgstr "Senha"
+
 msgid "Path"
 msgstr "Caminho"
 

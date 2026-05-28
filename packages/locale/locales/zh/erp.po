@@ -5617,6 +5617,9 @@ msgstr "零件"
 msgid "Pass"
 msgstr "通过"
 
+msgid "Password"
+msgstr "密码"
+
 msgid "Path"
 msgstr "路径"
 

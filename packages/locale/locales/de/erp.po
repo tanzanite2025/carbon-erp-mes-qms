@@ -5617,6 +5617,9 @@ msgstr "Teile"
 msgid "Pass"
 msgstr "Bestanden"
 
+msgid "Password"
+msgstr "Passwort"
+
 msgid "Path"
 msgstr "Pfad"
 

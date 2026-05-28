@@ -641,6 +641,9 @@ msgstr "零件"
 msgid "Passed Inspection"
 msgstr "检验通过"
 
+msgid "Password"
+msgstr "密码"
+
 msgid "Pause"
 msgstr "暂停"
 

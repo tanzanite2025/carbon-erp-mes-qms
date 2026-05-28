@@ -46,7 +46,10 @@ import Background from "~/styles/background.css?url";
 import NProgress from "~/styles/nprogress.css?url";
 import Tailwind from "~/styles/tailwind.css?url";
 import type { Route } from "./+types/root";
-import { ExtensionErrorBoundary, setupGlobalErrorHandlers } from "./components/ErrorBoundary/ExtensionErrorBoundary";
+import {
+  ExtensionErrorBoundary,
+  setupGlobalErrorHandlers
+} from "./components/ErrorBoundary/ExtensionErrorBoundary";
 import "./polyfill";
 import { getTheme } from "./services/theme.server";
 
@@ -118,18 +121,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         SUPABASE_ANON_KEY,
         SUPABASE_URL,
         SUPER_ADMIN_EMAIL,
-        VERCEL_ENV,
-        VERCEL_URL,
-        XERO_CLIENT_ID
-      },
-        JIRA_CLIENT_ID,
-        MES_URL,
-        ONSHAPE_CLIENT_ID,
-        POSTHOG_API_HOST,
-        POSTHOG_PROJECT_PUBLIC_KEY,
-        QUICKBOOKS_CLIENT_ID,
-        SUPABASE_ANON_KEY,
-        SUPABASE_URL,
         VERCEL_ENV,
         VERCEL_URL,
         XERO_CLIENT_ID
@@ -254,7 +245,7 @@ export default function App() {
   useMount(() => {
     // Setup global error handlers to catch browser extension errors
     setupGlobalErrorHandlers();
-    
+
     if (!window.clientCache) {
       window.clientCache = new QueryClient({
         defaultOptions: {

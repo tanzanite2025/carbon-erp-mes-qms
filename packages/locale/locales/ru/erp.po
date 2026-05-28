@@ -5617,6 +5617,9 @@ msgstr "Детали"
 msgid "Pass"
 msgstr "Пройти"
 
+msgid "Password"
+msgstr "Пароль"
+
 msgid "Path"
 msgstr "Путь"
 
