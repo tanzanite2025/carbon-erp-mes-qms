@@ -104,6 +104,23 @@ export async function action({ request }: ActionFunctionArgs) {
   const { email } = validation.data;
   const user = await getUserByEmail(email);
 
+  const devBypassEmail = process.env.DEV_BYPASS_EMAIL;
+  if (
+    devBypassEmail &&
+    email.toLowerCase() === devBypassEmail.toLowerCase() &&
+    user.data?.active
+  ) {
+    const { signInWithBypassEmail } = await import("@carbon/auth/auth.server");
+    const authSession = await signInWithBypassEmail(email);
+    if (authSession) {
+      const { setAuthSession } = await import("@carbon/auth/session.server");
+      const sessionCookie = await setAuthSession(request, { authSession });
+      return redirect(path.to.authenticatedRoot, {
+        headers: [["Set-Cookie", sessionCookie]]
+      });
+    }
+  }
+
   if (user.data && user.data.active) {
     const magicLink = await sendMagicLink(email);
 
