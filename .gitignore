@@ -1,0 +1,65 @@
+.DS_Store
+node_modules
+.turbo
+*.log
+.next
+.vercel
+.react-router
+.trigger
+.sst
+dist
+dist-ssr
+*.local
+.cache
+server/dist
+public/dist
+vite.config.ts.timestamp*
+.claude-flow
+.claude
+.mcp.json
+opencode.json
+.windsurf
+
+# Lingui compiled catalogs
+packages/locale/locales/**/*.mjs
+
+scripts/migrations/data
+scripts/paperless-test.ts
+scripts/test-get-stripe-customer.ts
+
+# local env files
+.env
+.envrc
+.env.local
+.env.dev
+.env.development.local
+.env.test.local
+.env.prod
+.env.production
+.env.production.local
+!packages/apps/**/.env
+packages/database/.env
+packages/database/supabase/seed.sql
+
+.vercel
+.env*.local
+
+.react-router
+
+# Rust
+**/target/
+**/*.rs.bk
+**/pkg/
+**/pkg/
+
+# C++ (cad-engine)
+**/build/
+!**/build/.gitkeep
+
+# Worktree-isolated dev environment
+.carbon-worktree
+.superpowers
+docs/superpowers
+llm/tasks
+apps/*/portless.json
+packages/database/supabase/snippets/**

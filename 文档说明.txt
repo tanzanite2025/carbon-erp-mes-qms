@@ -1,0 +1,41 @@
+Carbon 项目文档结构
+===================
+
+📖 核心文档（必读）
+-------------------
+README-CN.md              - 项目概览和快速开始
+开发指南.md               - 开发环境配置和常用命令
+配置完成总结.md           - 已完成的配置说明
+
+📚 参考文档（按需查看）
+-----------------------
+CHINESE_LOCALIZATION_ANALYSIS.md  - 中文本地化分析
+ERP与MES架构分析.md               - 系统架构分析
+Git仓库迁移指南.md                - 迁移到自己仓库的方法
+Git快速参考.md                    - Git 常用命令
+
+🛠️ 脚本文件
+-----------
+dev.sh                    - 启动开发环境（在 Git Bash 中运行）
+setup.sh                  - 初始化环境（首次运行）
+migrate-to-my-repo.sh     - Git 仓库迁移脚本（Bash 版本）
+migrate-to-my-repo.ps1    - Git 仓库迁移脚本（PowerShell 版本）
+
+⚙️ 配置文件
+-----------
+.env                      - 环境变量配置
+docker-compose.yml        - Docker 配置（Redis 端口已改为 6380）
+
+🚀 快速启动
+-----------
+1. 确保 Docker Desktop 正在运行
+2. 打开 Git Bash
+3. 运行: ./dev.sh
+4. 访问: http://localhost:4000 (ERP) 或 http://localhost:4001 (MES)
+
+💡 提示
+-------
+- 所有 crbn 命令必须在 Git Bash 中运行
+- 首次启动需要 5-10 分钟
+- 邮件在 https://mail.dev 查看
+- 默认显示中文界面
