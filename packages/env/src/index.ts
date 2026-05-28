@@ -22,6 +22,7 @@ declare global {
       QUICKBOOKS_CLIENT_ID: string;
       XERO_CLIENT_ID: string;
       DEFAULT_LANGUAGE: string;
+      SUPER_ADMIN_EMAIL: string;
     };
   }
 }
@@ -77,6 +78,8 @@ declare global {
       XERO_CLIENT_SECRET: string;
       XERO_WEBHOOK_SECRET: string;
       DEFAULT_LANGUAGE: string;
+      SUPER_ADMIN_EMAIL: string;
+      SUPER_ADMIN_PASSWORD: string;
     }
   }
 }
@@ -352,6 +355,16 @@ export const DEFAULT_LANGUAGE =
     isSecret: false
   }) ?? "en";
 
+export const SUPER_ADMIN_EMAIL = getEnv("SUPER_ADMIN_EMAIL", {
+  isRequired: false,
+  isSecret: false
+});
+
+export const SUPER_ADMIN_PASSWORD = getEnv("SUPER_ADMIN_PASSWORD", {
+  isRequired: false,
+  isSecret: true
+});
+
 export const RATE_LIMIT = parseInt(
   getEnv("RATE_LIMIT", { isRequired: false, isSecret: false }) || "5",
   10
@@ -414,6 +427,7 @@ export function getBrowserEnv() {
     QUICKBOOKS_CLIENT_ID,
     SUPABASE_ANON_KEY,
     SUPABASE_URL,
+    SUPER_ADMIN_EMAIL,
     VERCEL_ENV,
     VERCEL_URL,
     XERO_CLIENT_ID

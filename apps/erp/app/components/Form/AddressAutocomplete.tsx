@@ -146,8 +146,13 @@ const AddressAutocomplete = ({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Tab") {
-        setOpen(false);
+      try {
+        if (e.key === "Tab") {
+          setOpen(false);
+        }
+      } catch (error) {
+        // Silently catch errors from browser extensions
+        console.warn('[Carbon] Keyboard event error suppressed:', error);
       }
     },
     []

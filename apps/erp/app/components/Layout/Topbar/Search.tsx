@@ -439,12 +439,25 @@ function ResultIcon({ entityType }: { entityType: string }) {
 }
 
 const SearchButton = () => {
-  const { openSearchModal } = useUIStore();
+  const { openSearchModal, isSearchModalOpen } = useUIStore();
 
   useShortcutKeys({
     shortcut: shortcut,
-    action: openSearchModal
+    action: (e) => {
+      // Only open if not already open and not clicking on navigation elements
+      if (!isSearchModalOpen) {
+        e.preventDefault();
+        e.stopPropagation();
+        openSearchModal();
+      }
+    }
   });
+
+  const handleSearchClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openSearchModal();
+  };
 
   return (
     <div>
@@ -452,7 +465,7 @@ const SearchButton = () => {
         leftIcon={<LuSearch />}
         variant="secondary"
         className="w-[200px] px-2 hover:scale-100"
-        onClick={openSearchModal}
+        onClick={handleSearchClick}
       >
         <HStack className="w-full">
           <div className="flex flex-grow">

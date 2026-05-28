@@ -38,10 +38,15 @@ export default Currency;
 
 const useCurrencyCodes = () => {
   const currencyFetcher =
-    useFetcher<Awaited<ReturnType<typeof getCurrenciesList>>>();
+    useFetcher<Awaited<ReturnType<typeof getCurrenciesList>>>({
+      key: "currency-list" // Add unique key to prevent conflicts
+    });
 
   useMount(() => {
-    currencyFetcher.load(path.to.api.currencies);
+    // Only load if not already loaded
+    if (currencyFetcher.state === "idle" && !currencyFetcher.data) {
+      currencyFetcher.load(path.to.api.currencies);
+    }
   });
 
   const options = useMemo(

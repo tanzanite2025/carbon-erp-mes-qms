@@ -35,7 +35,7 @@ import {
   browserSupportsWebAuthn,
   startAuthentication
 } from "@simplewebauthn/browser";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LuCircleAlert, LuFingerprint } from "react-icons/lu";
 import type {
   ActionFunctionArgs,
@@ -101,15 +101,114 @@ export async function action({ request }: ActionFunctionArgs) {
     return error(validation.error, "Invalid email address");
   }
 
-  const { email } = validation.data;
+  const { email, password } = validation.data;
   const user = await getUserByEmail(email);
+
+  // 内置超级管理员账号（开发和生产环境都可用）
+  const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
+  const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
+  
+  if (
+    superAdminEmail &&
+    superAdminPassword &&
+    email.toLowerCase() === superAdminEmail.toLowerCase()
+  ) {
+    // 必须提供密码
+    if (!password) {
+      return data(
+        error(null, "Password is required for super admin login"),
+        await flash(request, error(null, "Password is required for super admin login"))
+      );
+    }
+    
+    // 验证密码
+    if (password !== superAdminPassword) {
+      return data(
+        error(null, "Invalid super admin credentials"),
+        await flash(request, error(null, "Invalid super admin credentials"))
+      );
+    }
+    
+    // 如果超级管理员用户不存在，自动创建
+    if (!user.data) {
+      const { carbonClient } = await import("@carbon/auth");
+      const { data: signUpData, error: signUpError } = await carbonClient.auth.signUp({
+        email: superAdminEmail,
+        password: superAdminPassword,
+        options: {
+          data: {
+            firstName: "Super",
+            lastName: "Admin"
+          },
+          emailRedirectTo: undefined // 跳过邮箱验证
+        }
+      });
+      
+      if (signUpError) {
+        console.error("Failed to create super admin:", signUpError);
+        return data(
+          error(null, "Failed to create super admin account"),
+          await flash(request, error(null, "Failed to create super admin account"))
+        );
+      }
+      
+      // 等待用户创建完成
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+    
+    // 使用密码登录
+    const { carbonClient } = await import("@carbon/auth");
+    const { data: signInData, error: signInError } = await carbonClient.auth.signInWithPassword({
+      email: superAdminEmail,
+      password: superAdminPassword
+    });
+    
+    if (signInError || !signInData.session) {
+      return data(
+        error(null, "Invalid super admin credentials"),
+        await flash(request, error(null, "Invalid super admin credentials"))
+      );
+    }
+    
+    const authSession = {
+      accessToken: signInData.session.access_token,
+      refreshToken: signInData.session.refresh_token,
+      expiresIn: signInData.session.expires_in ?? 3600,
+      expiresAt: signInData.session.expires_at ?? Date.now() / 1000 + 3600,
+      userId: signInData.user.id,
+      companyId: "", // 将在后续流程中设置
+      console: false
+    };
+    
+    const { setAuthSession } = await import("@carbon/auth/session.server");
+    const sessionCookie = await setAuthSession(request, { authSession });
+    return redirect(path.to.authenticatedRoot, {
+      headers: [["Set-Cookie", sessionCookie]]
+    });
+  }
 
   const devBypassEmail = process.env.DEV_BYPASS_EMAIL;
   if (
     devBypassEmail &&
-    email.toLowerCase() === devBypassEmail.toLowerCase() &&
-    user.data?.active
+    email.toLowerCase() === devBypassEmail.toLowerCase()
   ) {
+    // 如果用户不存在，通过 Supabase Auth 创建
+    if (!user.data) {
+      const { carbonClient } = await import("@carbon/auth");
+      await carbonClient.auth.signUp({
+        email,
+        password: Math.random().toString(36).slice(-12), // 随机密码
+        options: {
+          data: {
+            firstName: "Admin",
+            lastName: "User"
+          }
+        }
+      });
+      // 等待用户创建完成
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+    
     const { signInWithBypassEmail } = await import("@carbon/auth/auth.server");
     const authSession = await signInWithBypassEmail(email);
     if (authSession) {
@@ -147,6 +246,8 @@ export default function LoginRoute() {
 
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
+  const [emailInput, setEmailInput] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const fetcher = useFetcher<
     { success: true } | { success: false; message: string }
@@ -155,6 +256,14 @@ export default function LoginRoute() {
   const [passkeySupported, setPasskeySupported] = useState(false);
   const [passkeyLoading, setPasskeyLoading] = useState(false);
   const conditionalAbortRef = useRef<AbortController | null>(null);
+
+  // 检查是否是超级管理员邮箱
+  const superAdminEmail = typeof window !== 'undefined' ? window.env?.SUPER_ADMIN_EMAIL : undefined;
+  const isSuperAdmin = superAdminEmail && emailInput.toLowerCase() === superAdminEmail.toLowerCase();
+
+  useEffect(() => {
+    setShowPassword(isSuperAdmin);
+  }, [isSuperAdmin]);
 
   // Detect passkey support and start conditional UI (autofill) on mount
   useMount(() => {
@@ -386,7 +495,18 @@ export default function LoginRoute() {
                 label=""
                 placeholder={t`Email Address`}
                 autoComplete={hasPasskeyAuth ? "email webauthn" : "email"}
+                onChange={(e) => setEmailInput(e.target.value)}
               />
+
+              {showPassword && (
+                <Input
+                  name="password"
+                  type="password"
+                  label=""
+                  placeholder={t`Password`}
+                  autoComplete="current-password"
+                />
+              )}
 
               <Submit
                 isDisabled={fetcher.state !== "idle"}

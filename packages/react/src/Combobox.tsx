@@ -106,7 +106,7 @@ const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
           </span>
         )}
 
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover open={open} onOpenChange={setOpen} modal={true}>
           <PopoverTrigger disabled={isReadOnly} asChild>
             {inline ? (
               <IconButton
@@ -117,7 +117,9 @@ const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
                 isDisabled={isReadOnly}
                 disabled={isReadOnly}
                 ref={ref}
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   if (!isReadOnly) setOpen(true);
                 }}
               />
@@ -134,7 +136,11 @@ const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
                 ref={ref}
                 {...props}
                 disabled={isReadOnly}
-                onClick={() => setOpen(true)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setOpen(true);
+                }}
               >
                 {value ? (
                   <TruncatedTooltipText
@@ -270,10 +276,20 @@ function VirtualizedCommand({
                     ? CSS.escape(item.label) + CSS.escape(item.helper ?? "")
                     : reactNodeToString(item.label)
                 }
-                onSelect={() => {
+                onSelect={(e) => {
+                  e?.preventDefault?.();
+                  e?.stopPropagation?.();
                   onChange?.(item.value);
                   setSearch("");
                   setOpen(false);
+                }}
+                onPointerDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                 }}
                 style={{
                   position: "absolute",

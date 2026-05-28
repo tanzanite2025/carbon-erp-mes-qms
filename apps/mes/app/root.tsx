@@ -14,7 +14,8 @@ import {
   OperatingSystemContextProvider,
   Toaster,
   TooltipProvider,
-  useMode
+  useMode,
+  useMount
 } from "@carbon/react";
 import type { Theme } from "@carbon/utils";
 import { modeValidator, themes } from "@carbon/utils";
@@ -42,6 +43,7 @@ import Background from "~/styles/background.css?url";
 import NProgress from "~/styles/nprogress.css?url";
 import Tailwind from "~/styles/tailwind.css?url";
 import type { Route } from "./+types/root";
+import { ExtensionErrorBoundary, setupGlobalErrorHandlers } from "./components/ErrorBoundary/ExtensionErrorBoundary";
 import { getTheme } from "./services/theme.server";
 
 export const middleware = [flashMiddleware];
@@ -74,6 +76,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     POSTHOG_PROJECT_PUBLIC_KEY,
     SUPABASE_URL,
     SUPABASE_ANON_KEY,
+    SUPER_ADMIN_EMAIL,
     VERCEL_ENV,
     VERCEL_URL
   } = getBrowserEnv();
@@ -96,6 +99,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         POSTHOG_PROJECT_PUBLIC_KEY,
         SUPABASE_URL,
         SUPABASE_ANON_KEY,
+        SUPER_ADMIN_EMAIL,
         VERCEL_ENV,
         VERCEL_URL
       },
@@ -218,19 +222,26 @@ export default function App() {
   /* Dark/Light Mode */
   const mode = useMode();
 
+  useMount(() => {
+    // Setup global error handlers to catch browser extension errors
+    setupGlobalErrorHandlers();
+  });
+
   return (
     <OperatingSystemContextProvider platform={prefs.platform}>
       <LocaleProvider locale={appLanguage} catalog={linguiCatalog}>
         <I18nProvider locale={prefs.locale}>
           <TooltipProvider delayDuration={200}>
-            <Document mode={mode} theme={theme} lang={appLanguage}>
-              <Outlet />
-              <script
-                dangerouslySetInnerHTML={{
-                  __html: `window.env = ${JSON.stringify(env)};`
-                }}
-              />
-            </Document>
+            <ExtensionErrorBoundary>
+              <Document mode={mode} theme={theme} lang={appLanguage}>
+                <Outlet />
+                <script
+                  dangerouslySetInnerHTML={{
+                    __html: `window.env = ${JSON.stringify(env)};`
+                  }}
+                />
+              </Document>
+            </ExtensionErrorBoundary>
           </TooltipProvider>
         </I18nProvider>
       </LocaleProvider>
