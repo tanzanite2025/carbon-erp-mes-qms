@@ -1,4 +1,4 @@
-import { cn, useDisclosure, VStack } from "@carbon/react";
+import { cn, useIsMobile, VStack } from "@carbon/react";
 import {
   closestCenter,
   DndContext,
@@ -13,9 +13,10 @@ import {
 } from "@dnd-kit/sortable";
 import type { AnchorHTMLAttributes } from "react";
 import { forwardRef, memo, useEffect } from "react";
-import { LuSettings2 } from "react-icons/lu";
+import { LuChevronLeft, LuChevronRight, LuSettings2 } from "react-icons/lu";
 import { Link, useMatches } from "react-router";
 import { useModules, useOptimisticLocation, useSettingsModule } from "~/hooks";
+import { useUIStore } from "~/stores/ui";
 import type { Authenticated, NavItem } from "~/types";
 import { HiddenModulesPopover } from "./HiddenModulesPopover";
 import { NavigationEditBar } from "./NavigationEditBar";
@@ -23,7 +24,6 @@ import { SortableNavItem } from "./SortableNavItem";
 import { useNavigationEditMode } from "./useNavigationEditMode";
 
 const PrimaryNavigation = () => {
-  const navigationPanel = useDisclosure();
   const location = useOptimisticLocation();
   const currentModule = getModule(location.pathname);
   const links = useModules();
@@ -40,6 +40,14 @@ const PrimaryNavigation = () => {
 
   const editMode = useNavigationEditMode();
 
+  // 使用 UI Store 管理固定状态（持久化）
+  const isMobile = useIsMobile();
+  const isPinned = useUIStore((state) => state.isSidebarPinned);
+  const setSidebarPinned = useUIStore((state) => state.setSidebarPinned);
+
+  // 移动端强制不固定
+  const effectiveIsPinned = isMobile ? false : isPinned;
+
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
     useSensor(KeyboardSensor)
@@ -54,7 +62,13 @@ const PrimaryNavigation = () => {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [editMode.isEditing, editMode.cancelEditMode]);
 
-  const isOpen = navigationPanel.isOpen || editMode.isEditing;
+  // 展开状态：只有固定展开或编辑模式
+  const isOpen = effectiveIsPinned || editMode.isEditing;
+
+  // 点击切换按钮：直接设置相反的状态
+  const handleTogglePin = () => {
+    setSidebarPinned(!effectiveIsPinned);
+  };
 
   return (
     <div className="w-14 h-full flex-col z-50 hidden sm:flex">
@@ -66,14 +80,51 @@ const PrimaryNavigation = () => {
           "transition-width duration-200",
           "hide-scrollbar overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-accent"
         )}
-        onMouseEnter={editMode.isEditing ? undefined : navigationPanel.onOpen}
-        onMouseLeave={editMode.isEditing ? undefined : navigationPanel.onClose}
       >
         <VStack
           spacing={1}
           className="flex flex-col justify-between h-full px-2"
         >
           <VStack spacing={1}>
+            {/* 切换按钮 - 与其他导航项样式一致 */}
+            {!isMobile && (
+              <button
+                type="button"
+                onClick={handleTogglePin}
+                className={cn(
+                  "relative",
+                  "h-10 w-10 group-data-[state=expanded]:w-full",
+                  "flex items-center rounded-md",
+                  "group-data-[state=collapsed]:justify-center",
+                  "group-data-[state=expanded]:-space-x-2",
+                  "font-medium shrink-0 inline-flex items-center justify-center select-none",
+                  "transition-[background-color,color,width] duration-100 ease-out",
+                  "hover:bg-accent hover:text-accent-foreground",
+                  "focus:!outline-none focus:!ring-0 active:!outline-none active:!ring-0",
+                  "after:pointer-events-none after:absolute after:-inset-[3px] after:rounded-lg after:border after:border-blue-500 after:opacity-0 after:ring-2 after:ring-blue-500/20 after:transition-opacity focus-visible:after:opacity-100 active:after:opacity-0"
+                )}
+                aria-label={effectiveIsPinned ? "收起侧边栏" : "展开侧边栏"}
+                title={effectiveIsPinned ? "收起侧边栏" : "展开侧边栏"}
+              >
+                <div className="absolute left-3 top-3 flex items-center justify-center">
+                  {effectiveIsPinned ? (
+                    <LuChevronLeft className="h-4 w-4" />
+                  ) : (
+                    <LuChevronRight className="h-4 w-4" />
+                  )}
+                </div>
+                <span
+                  className={cn(
+                    "min-w-[128px] text-sm",
+                    "absolute left-7 group-data-[state=expanded]:left-12",
+                    "opacity-0 group-data-[state=expanded]:opacity-100"
+                  )}
+                >
+                  {effectiveIsPinned ? "收起" : "展开"}
+                </span>
+              </button>
+            )}
+
             {editMode.isEditing ? (
               <DndContext
                 sensors={sensors}
@@ -105,7 +156,6 @@ const PrimaryNavigation = () => {
                     link={link}
                     isActive={isActive}
                     isOpen={isOpen}
-                    onClick={navigationPanel.onClose}
                   />
                 );
               })
@@ -131,7 +181,6 @@ const PrimaryNavigation = () => {
                     link={settingsModule}
                     isActive={isActive}
                     isOpen={isOpen}
-                    onClick={navigationPanel.onClose}
                   />
                 );
               })()}

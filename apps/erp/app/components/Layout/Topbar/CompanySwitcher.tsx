@@ -15,7 +15,7 @@ import {
   useMode
 } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { BsFillHexagonFill } from "react-icons/bs";
 import { LuChevronsUpDown, LuHouse } from "react-icons/lu";
 import { Form, Link } from "react-router";
@@ -30,6 +30,7 @@ const CompanySwitcher = () => {
   );
   const user = useUser();
   const mode = useMode();
+  const [open, setOpen] = useState(false);
 
   const hasMultipleCompanies = Boolean(
     routeData?.companies && routeData?.companies.length > 1
@@ -54,24 +55,30 @@ const CompanySwitcher = () => {
 
     // If a group has only one company, move it to "Companies"
     const result = new Map<string, { name: string; companies: Company[] }>();
+    const companiesGroup: Company[] = [];
+
     for (const [key, group] of groups) {
       if (group.companies.length === 1 && key !== "Companies") {
-        const existing = result.get("Companies");
-        if (existing) {
-          existing.companies.push(...group.companies);
-        } else {
-          result.set("Companies", {
-            name: "Companies",
-            companies: [...group.companies]
-          });
-        }
+        // 单个公司的组（非 "Companies"）合并到 companiesGroup
+        companiesGroup.push(...group.companies);
       } else {
-        const existing = result.get(key);
-        if (existing) {
-          existing.companies.push(...group.companies);
-        } else {
-          result.set(key, group);
-        }
+        // 多个公司的组或者已经是 "Companies" 的组直接添加
+        result.set(key, group);
+      }
+    }
+
+    // 如果有需要合并的单公司组，添加到结果中
+    if (companiesGroup.length > 0) {
+      const existing = result.get("Companies");
+      if (existing) {
+        // 如果已经有 "Companies" 组，合并进去
+        existing.companies.push(...companiesGroup);
+      } else {
+        // 否则创建新的 "Companies" 组
+        result.set("Companies", {
+          name: "Companies",
+          companies: companiesGroup
+        });
       }
     }
 
@@ -103,7 +110,7 @@ const CompanySwitcher = () => {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -127,7 +134,18 @@ const CompanySwitcher = () => {
           })()}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[240px]">
+      <DropdownMenuContent
+        align="start"
+        side="bottom"
+        className="min-w-[240px] duration-300"
+        onPointerDownOutside={(e) => {
+          // 只有点击外部时才关闭，不是点击触发按钮
+          const target = e.target as HTMLElement;
+          if (target.closest('button[aria-haspopup="menu"]')) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DropdownMenuItem asChild>
           <Link to={path.to.authenticatedRoot}>
             <DropdownMenuIcon icon={<LuHouse />} />
