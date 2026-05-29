@@ -73,7 +73,7 @@ export function TimeCardButton({ openClockEntry }: TimeCardButtonProps) {
             disabled={fetcher.state !== "idle"}
             className="font-medium"
           >
-            <LuSquare className="size-4" />
+            <LuSquare className="h-5 w-5" />
             <span>
               <Trans>Clock Out</Trans>
             </span>
@@ -92,7 +92,7 @@ export function TimeCardButton({ openClockEntry }: TimeCardButtonProps) {
             disabled={fetcher.state !== "idle"}
             className="font-medium"
           >
-            <LuPlay className="size-4" />
+            <LuPlay className="h-5 w-5" />
             <span>
               <Trans>Clock In</Trans>
             </span>
@@ -110,7 +110,7 @@ export function TimeCardButton({ openClockEntry }: TimeCardButtonProps) {
             to={path.to.timeCardPage}
             onClick={() => isMobile && setOpenMobile(false)}
           >
-            <LuClock />
+            <LuClock className="h-5 w-5" />
             <span>
               <Trans>My Hours</Trans>
             </span>

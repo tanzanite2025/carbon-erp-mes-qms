@@ -535,7 +535,7 @@ const sidebarMenuButtonVariants = cva(
     // Default: muted text color (Vercel style - text is subdued until interaction)
     "text-sidebar-foreground/70",
     // Icons inherit the muted color
-    "[&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-foreground/70",
+    "[&>svg]:size-5 [&>svg]:shrink-0 [&>svg]:text-sidebar-foreground/70",
     // Focus ring
     "ring-sidebar-ring focus-visible:ring-2",
     // Transitions - fast and smooth

@@ -21,6 +21,7 @@ import {
 } from "@carbon/react";
 import { getStripeCustomerByCompanyId } from "@carbon/stripe/stripe.server";
 import { Edition } from "@carbon/utils";
+import { Trans } from "@lingui/react/macro";
 import posthog from "posthog-js";
 import { Suspense } from "react";
 import type {
@@ -146,7 +147,30 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   }
 
   if (!locations.data || locations.data.length === 0) {
-    throw new Error(`No locations found for ${company.name}`);
+    // 没有 location 时，返回空数组，让前端显示提示
+    return data({
+      session: {
+        accessToken,
+        expiresIn,
+        expiresAt
+      },
+      activeEvents: 0,
+      activeMaintenanceCount: 0,
+      company,
+      companies: companies.data ?? [],
+      consoleEnabled: false,
+      consoleMode: false,
+      location: null,
+      locationEmployeeIds: [],
+      locations: [],
+      openClockEntry: null,
+      effectiveUserId: userId,
+      pinnedInUser: null,
+      plan: companyPlan?.planId,
+      timeCardEnabled: false,
+      user: user.data,
+      noLocations: true // 标记没有 location
+    });
   }
 
   // Sliding window: refresh pin-in cookie on every page load
@@ -186,7 +210,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       pinnedInUser,
       plan: companyPlan?.planId,
       timeCardEnabled,
-      user: user.data
+      user: user.data,
+      noLocations: false
     },
     headers.has("Set-Cookie") ? { headers } : undefined
   );
@@ -207,7 +232,8 @@ export default function AuthenticatedRoute() {
     openClockEntry,
     pinnedInUser,
     timeCardEnabled,
-    user
+    user,
+    noLocations
   } = useLoaderData<typeof loader>();
 
   const navigate = useNavigate();
@@ -241,11 +267,59 @@ export default function AuthenticatedRoute() {
           acknowledgeAction={path.to.acknowledge}
           logoutAction={path.to.logout}
         />
+      ) : noLocations ? (
+        // 没有 location 时显示友好提示
+        <div className="flex items-center justify-center h-full bg-background p-4">
+          <div className="max-w-md w-full text-center space-y-6">
+            <div className="flex justify-center">
+              <div className="rounded-full bg-yellow-100 dark:bg-yellow-900/20 p-4">
+                <svg
+                  className="h-12 w-12 text-yellow-600 dark:text-yellow-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <h1 className="text-2xl font-semibold text-foreground">
+                <Trans>需要创建车间位置</Trans>
+              </h1>
+              <p className="text-muted-foreground">
+                <Trans>
+                  MES 车间管理系统需要至少一个车间位置才能使用。请前往 ERP
+                  系统的资源模块创建车间位置。
+                </Trans>
+              </p>
+            </div>
+            <div className="space-y-3">
+              <a
+                href={`${ERP_URL}/x/resources/locations/new`}
+                className="inline-flex items-center justify-center w-full h-10 px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-colors"
+              >
+                <Trans>创建车间位置</Trans>
+              </a>
+              <a
+                href={ERP_URL}
+                className="inline-flex items-center justify-center w-full h-10 px-4 py-2 text-sm font-medium text-foreground bg-secondary rounded-md hover:bg-secondary/80 transition-colors"
+              >
+                <Trans>返回 ERP</Trans>
+              </a>
+            </div>
+          </div>
+        </div>
       ) : (
         <CarbonProvider session={session}>
           <RealtimeDataProvider>
             <SidebarProvider defaultOpen={false}>
-              <TooltipProvider delayDuration={0}>
+              <TooltipProvider delayDuration={200}>
                 <AppSidebar
                   activeEvents={activeEvents}
                   activeMaintenanceCount={activeMaintenanceCount}

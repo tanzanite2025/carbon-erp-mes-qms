@@ -23,7 +23,7 @@ const SearchFilter = ({ param, size, ...props }: SearchFilterProps) => {
   return (
     <InputGroup size={size}>
       <InputLeftElement>
-        <LuSearch className="text-muted-foreground w-3.5 h-3.5 mt-[-2px]" />
+        <LuSearch className="text-muted-foreground size-4 mt-[-2px]" />
       </InputLeftElement>
       <Input
         value={query}

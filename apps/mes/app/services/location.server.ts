@@ -1,4 +1,3 @@
-import { notFound } from "@carbon/auth";
 import type { Database } from "@carbon/database";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import * as cookie from "cookie";
@@ -58,10 +57,10 @@ export async function getLocation(
     }
   }
 
-  if (!location)
-    throw notFound(
-      "Failed to get a valid location. Please add one in the resources module."
-    );
+  if (!location) {
+    // 返回 null 而不是抛出错误，让调用方决定如何处理
+    return { location: null, updated: false };
+  }
 
   if (updated) {
     setLocation(companyId, location);

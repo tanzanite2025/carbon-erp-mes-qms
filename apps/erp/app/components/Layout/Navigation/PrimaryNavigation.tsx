@@ -106,16 +106,16 @@ const PrimaryNavigation = () => {
                 aria-label={effectiveIsPinned ? "收起侧边栏" : "展开侧边栏"}
                 title={effectiveIsPinned ? "收起侧边栏" : "展开侧边栏"}
               >
-                <div className="absolute left-3 top-3 flex items-center justify-center">
+                <div className="absolute left-3 top-3 flex items-center justify-center text-primary">
                   {effectiveIsPinned ? (
-                    <LuChevronLeft className="h-4 w-4" />
+                    <LuChevronLeft className="h-5 w-5" />
                   ) : (
-                    <LuChevronRight className="h-4 w-4" />
+                    <LuChevronRight className="h-5 w-5" />
                   )}
                 </div>
                 <span
                   className={cn(
-                    "min-w-[128px] text-sm",
+                    "min-w-[128px] text-sm text-left",
                     "absolute left-7 group-data-[state=expanded]:left-12",
                     "opacity-0 group-data-[state=expanded]:opacity-100"
                   )}
@@ -277,7 +277,7 @@ const NavigationIconLink = forwardRef<
       <span
         aria-hidden={isOpen || undefined}
         className={cn(
-          "min-w-[128px] text-sm",
+          "min-w-[128px] text-sm text-left",
           "absolute left-7 group-data-[state=expanded]:left-12",
           "opacity-0 group-data-[state=expanded]:opacity-100"
         )}

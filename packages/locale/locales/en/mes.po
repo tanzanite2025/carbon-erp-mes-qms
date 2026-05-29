@@ -283,9 +283,9 @@ msgstr "Drag and drop a file here, or click to select a file"
 msgid "Dragging {0} cancelled."
 msgstr "Dragging {0} cancelled."
 
+#. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(item.dueDate) )
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString( operation.operationDueDate ) )
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(operation.jobDueDate) )
-#. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(item.dueDate) )
 msgid "Due {0}"
 msgstr "Due {0}"
 
@@ -491,6 +491,9 @@ msgstr "Materials"
 
 msgid "Maximum number of records reached"
 msgstr "Maximum number of records reached"
+
+msgid "MES 车间管理系统需要至少一个车间位置才能使用。请前往 ERP 系统的资源模块创建车间位置。"
+msgstr "MES 车间管理系统需要至少一个车间位置才能使用。请前往 ERP 系统的资源模块创建车间位置。"
 
 msgid "Model"
 msgstr "Model"
@@ -976,3 +979,15 @@ msgstr "You clocked in at {0}. You can edit your clock-out time below or acknowl
 
 msgid "You've been clocked in for {hoursElapsed} hours. Did you forget to clock out?"
 msgstr "You've been clocked in for {hoursElapsed} hours. Did you forget to clock out?"
+
+msgid "创建车间位置"
+msgstr "创建车间位置"
+
+msgid "展开/收起"
+msgstr "展开/收起"
+
+msgid "返回 ERP"
+msgstr "返回 ERP"
+
+msgid "需要创建车间位置"
+msgstr "需要创建车间位置"

@@ -96,6 +96,8 @@ export function AppSidebar({
     data: { id: string; clockIn: string; [key: string]: unknown } | null;
   }> | null;
 }) {
+  const { toggleSidebar } = useSidebar();
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -129,6 +131,20 @@ export function AppSidebar({
             </Suspense>
           </SidebarMenu>
         )}
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={toggleSidebar}
+              tooltip="展开/收起侧边栏"
+              className="text-primary"
+            >
+              <LuChevronDown className="h-5 w-5 rotate-90" />
+              <span>
+                <Trans>展开/收起</Trans>
+              </span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
         <UserNav
           company={company}
           companies={companies}
@@ -253,7 +269,7 @@ export function OperationsNav({
                   to={item.to}
                   onClick={() => isMobile && setOpenMobile(false)}
                 >
-                  {item.icon && <item.icon />}
+                  {item.icon && <item.icon className="h-5 w-5" />}
                   <span>{item.title}</span>
                   {item.label && (
                     <span className="ml-auto text-muted-foreground text-sm">

@@ -258,7 +258,7 @@ function DagLegend() {
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             )}
           >
-            <LuInfo className="w-4 h-4" />
+            <LuInfo className="size-4" />
           </button>
         </PopoverTrigger>
         <PopoverContent
@@ -273,7 +273,7 @@ function DagLegend() {
             {entries.map((entry) => (
               <HStack key={entry.label} spacing={3} className="items-center">
                 <div
-                  className={cn("w-4 h-4 rounded border-2", entry.className)}
+                  className={cn("size-4 rounded border-2", entry.className)}
                 />
                 <span className="text-[13px] text-foreground">
                   {entry.label}

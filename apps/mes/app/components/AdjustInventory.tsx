@@ -114,7 +114,11 @@ export function AdjustInventory({ add }: { add: boolean }) {
         tooltip={add ? t`Add Inventory` : t`Remove Inventory`}
         onClick={modal.onOpen}
       >
-        {add ? <LuGitPullRequestCreateArrow /> : <LuGitBranchPlus />}
+        {add ? (
+          <LuGitPullRequestCreateArrow className="h-5 w-5" />
+        ) : (
+          <LuGitBranchPlus className="h-5 w-5" />
+        )}
         <span>
           {add ? <Trans>Add Inventory</Trans> : <Trans>Remove Inventory</Trans>}
         </span>

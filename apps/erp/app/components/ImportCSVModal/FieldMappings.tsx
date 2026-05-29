@@ -365,7 +365,7 @@ function FieldRow({
           <span>{label}</span>
 
           {description && (
-            <TooltipProvider delayDuration={50}>
+            <TooltipProvider delayDuration={200}>
               <Tooltip>
                 <TooltipTrigger>
                   <LuInfo />

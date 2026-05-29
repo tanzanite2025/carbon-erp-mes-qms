@@ -109,198 +109,197 @@ export function ItemCard({
     : undefined;
 
   return (
-    <Link to={path.to.operation(item.id)}>
-      <Card
-        className={cn(
-          "max-w-[330px]",
-          cardVariants({
-            status: status
-          })
-        )}
-      >
-        <CardHeader className="flex flex-col justify-between relative gap-2">
-          <div className="flex w-full max-w-full justify-between items-start gap-2">
-            <div className="flex flex-col space-y-0 min-w-0">
-              {item.itemReadableId && (
-                <span className="text-xs text-muted-foreground line-clamp-1">
-                  {item.itemReadableId}
-                </span>
-              )}
-              <span className="mr-auto font-semibold line-clamp-2 leading-tight">
-                {item.itemDescription || item.itemReadableId}
+    <Card
+      className={cn(
+        "max-w-[330px]",
+        cardVariants({
+          status: status
+        })
+      )}
+    >
+      <CardHeader className="flex flex-col justify-between relative gap-2">
+        <div className="flex w-full max-w-full justify-between items-start gap-2">
+          <Link
+            to={path.to.operation(item.id)}
+            className="flex flex-col space-y-0 min-w-0 hover:underline"
+          >
+            {item.itemReadableId && (
+              <span className="text-xs text-muted-foreground line-clamp-1">
+                {item.itemReadableId}
               </span>
-            </div>
-            <Heading size="h4" className="text-muted-foreground/70">
-              {item.targetQuantity}
-            </Heading>
+            )}
+            <span className="mr-auto font-semibold line-clamp-2 leading-tight">
+              {item.itemDescription || item.itemReadableId}
+            </span>
+          </Link>
+          <Heading size="h4" className="text-muted-foreground/70">
+            {item.targetQuantity}
+          </Heading>
+        </div>
+
+        {showProgress &&
+          Number.isFinite(progress) &&
+          Number.isFinite(item?.duration) &&
+          Number(progress) >= 0 &&
+          Number(item?.duration) > 0 && (
+            <HStack className="mt-2">
+              <BarProgress
+                gradient
+                invertGradient
+                activeClassName={
+                  progress > (item.duration ?? 0)
+                    ? "bg-red-500"
+                    : status === "Paused"
+                      ? "bg-yellow-500"
+                      : "bg-emerald-500"
+                }
+                progress={Math.min(
+                  progress && item.duration
+                    ? (progress / item.duration) * 100
+                    : 0,
+                  100
+                )}
+              />
+              <LuTimer className="text-muted-foreground w-4 h-4" />
+            </HStack>
+          )}
+        {showProgress &&
+          Number.isFinite(item.quantity) &&
+          Number(item.quantity) > 0 && (
+            <HStack className="mt-2">
+              <BarProgress
+                progress={
+                  item.quantityCompleted && item.targetQuantity
+                    ? (item.quantityCompleted / item.targetQuantity) * 100
+                    : 0
+                }
+              />
+              <LuCircleCheck className="text-muted-foreground w-4 h-4" />
+            </HStack>
+          )}
+      </CardHeader>
+
+      <CardContent className="gap-2 text-left whitespace-pre-wrap text-sm">
+        {showThumbnail && item.thumbnailPath && (
+          <div className="flex justify-center">
+            <img
+              src={getPrivateUrl(item.thumbnailPath)}
+              alt={item.title}
+              className="w-full h-auto rounded-lg"
+            />
           </div>
-
-          {showProgress &&
-            Number.isFinite(progress) &&
-            Number.isFinite(item?.duration) &&
-            Number(progress) >= 0 &&
-            Number(item?.duration) > 0 && (
-              <HStack className="mt-2">
-                <BarProgress
-                  gradient
-                  invertGradient
-                  activeClassName={
-                    progress > (item.duration ?? 0)
-                      ? "bg-red-500"
-                      : status === "Paused"
-                        ? "bg-yellow-500"
-                        : "bg-emerald-500"
-                  }
-                  progress={Math.min(
-                    progress && item.duration
-                      ? (progress / item.duration) * 100
-                      : 0,
-                    100
-                  )}
-                />
-                <LuTimer className="text-muted-foreground w-4 h-4" />
-              </HStack>
-            )}
-          {showProgress &&
-            Number.isFinite(item.quantity) &&
-            Number(item.quantity) > 0 && (
-              <HStack className="mt-2">
-                <BarProgress
-                  progress={
-                    item.quantityCompleted && item.targetQuantity
-                      ? (item.quantityCompleted / item.targetQuantity) * 100
-                      : 0
-                  }
-                />
-                <LuCircleCheck className="text-muted-foreground w-4 h-4" />
-              </HStack>
-            )}
-        </CardHeader>
-
-        <CardContent className="gap-2 text-left whitespace-pre-wrap text-sm">
-          {showThumbnail && item.thumbnailPath && (
-            <div className="flex justify-center">
-              <img
-                src={getPrivateUrl(item.thumbnailPath)}
-                alt={item.title}
-                className="w-full h-auto rounded-lg"
-              />
-            </div>
-          )}
-          <HStack className="justify-start space-x-2">
-            <LuCirclePlay className="text-muted-foreground" />
-            <span className="text-sm line-clamp-1">{item.title}</span>
-          </HStack>
-
-          {showDescription && item.description && (
-            <HStack className="justify-start space-x-2">
-              <LuClipboardCheck className="text-muted-foreground" />
-              <span className="text-sm line-clamp-1">{item.description}</span>
-            </HStack>
-          )}
-          {showStatus && status && (
-            <HStack className="justify-start space-x-2">
-              {getStatusIcon(status)}
-              <span className="text-sm">{status}</span>
-            </HStack>
-          )}
-          {showDuration && typeof item.duration === "number" && (
-            <HStack className="justify-start space-x-2">
-              <LuTimer className="text-muted-foreground" />
-              <span className="text-sm">
-                {formatDurationMilliseconds(item.duration)}
-              </span>
-            </HStack>
-          )}
-          {showDueDate && item.deadlineType && (
-            <HStack className="justify-start space-x-2">
-              <DeadlineIcon
-                deadlineType={item.deadlineType}
-                overdue={isOverdue}
-              />
-              <Tooltip>
-                <TooltipTrigger>
-                  <span
-                    className={cn("text-sm", isOverdue ? "text-red-500" : "")}
-                  >
-                    {["ASAP", "No Deadline"].includes(item.deadlineType)
-                      ? item.deadlineType
-                      : item.dueDate
-                        ? t`Due ${formatRelativeTime(
-                            convertDateStringToIsoString(item.dueDate)
-                          )}`
-                        : "–"}
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent side="right">
-                  {item.deadlineType}
-                </TooltipContent>
-              </Tooltip>
-            </HStack>
-          )}
-          {showDueDate && item.dueDate && (
-            <HStack className="justify-start space-x-2">
-              <LuCalendarDays />
-              <span className="text-sm">{formatDate(item.dueDate)}</span>
-            </HStack>
-          )}
-
-          {showSalesOrder &&
-            item.salesOrderReadableId &&
-            item.salesOrderId &&
-            item.salesOrderLineId && (
-              <HStack className="justify-start space-x-2">
-                <RiProgress8Line className="text-muted-foreground" />
-                <span className="text-sm">{item.salesOrderReadableId}</span>
-              </HStack>
-            )}
-
-          {Array.isArray(employeeIds) && employeeIds.length > 0 && (
-            <HStack className="justify-start space-x-2">
-              <Avatar size="xs" name="Active Employee" />
-              <span className="text-sm">
-                <Trans>{employeeIds.length} Active</Trans>
-              </span>
-            </HStack>
-          )}
-
-          {showCustomer && item.customerId && (
-            <HStack className="justify-start space-x-2">
-              <LuSquareUser className="text-muted-foreground" />
-              <HStack className="truncate no-underline hover:no-underline">
-                <Avatar size="xs" name={customer?.name ?? ""} />
-                <span>{customer?.name}</span>
-              </HStack>
-            </HStack>
-          )}
-
-          {Number(item.quantityScrapped) > 0 && (
-            <HStack className="justify-start space-x-2 text-red-500">
-              <LuTrash className="w-4 h-4" />
-              <span className="text-sm">
-                <Trans>{item.quantityScrapped} Scrapped</Trans>
-              </span>
-            </HStack>
-          )}
-        </CardContent>
-        {(item.assignee || (item.tags && item.tags.length > 0)) && (
-          <CardFooter className="items-center justify-start space-2 text-xs flex-wrap">
-            {item.assignee && (
-              <EmployeeAvatar size="xs" employeeId={item.assignee} />
-            )}
-            {item.tags?.map((tag) => (
-              <Badge
-                key={tag}
-                variant="secondary"
-                className="border dark:border-none dark:shadow-button-base"
-              >
-                {tag}
-              </Badge>
-            ))}
-          </CardFooter>
         )}
-      </Card>
-    </Link>
+        <HStack className="justify-start space-x-2">
+          <LuCirclePlay className="text-muted-foreground" />
+          <span className="text-sm line-clamp-1">{item.title}</span>
+        </HStack>
+
+        {showDescription && item.description && (
+          <HStack className="justify-start space-x-2">
+            <LuClipboardCheck className="text-muted-foreground" />
+            <span className="text-sm line-clamp-1">{item.description}</span>
+          </HStack>
+        )}
+        {showStatus && status && (
+          <HStack className="justify-start space-x-2">
+            {getStatusIcon(status)}
+            <span className="text-sm">{status}</span>
+          </HStack>
+        )}
+        {showDuration && typeof item.duration === "number" && (
+          <HStack className="justify-start space-x-2">
+            <LuTimer className="text-muted-foreground" />
+            <span className="text-sm">
+              {formatDurationMilliseconds(item.duration)}
+            </span>
+          </HStack>
+        )}
+        {showDueDate && item.deadlineType && (
+          <HStack className="justify-start space-x-2">
+            <DeadlineIcon
+              deadlineType={item.deadlineType}
+              overdue={isOverdue}
+            />
+            <Tooltip>
+              <TooltipTrigger>
+                <span
+                  className={cn("text-sm", isOverdue ? "text-red-500" : "")}
+                >
+                  {["ASAP", "No Deadline"].includes(item.deadlineType)
+                    ? item.deadlineType
+                    : item.dueDate
+                      ? t`Due ${formatRelativeTime(
+                          convertDateStringToIsoString(item.dueDate)
+                        )}`
+                      : "–"}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="right">{item.deadlineType}</TooltipContent>
+            </Tooltip>
+          </HStack>
+        )}
+        {showDueDate && item.dueDate && (
+          <HStack className="justify-start space-x-2">
+            <LuCalendarDays />
+            <span className="text-sm">{formatDate(item.dueDate)}</span>
+          </HStack>
+        )}
+
+        {showSalesOrder &&
+          item.salesOrderReadableId &&
+          item.salesOrderId &&
+          item.salesOrderLineId && (
+            <HStack className="justify-start space-x-2">
+              <RiProgress8Line className="text-muted-foreground" />
+              <span className="text-sm">{item.salesOrderReadableId}</span>
+            </HStack>
+          )}
+
+        {Array.isArray(employeeIds) && employeeIds.length > 0 && (
+          <HStack className="justify-start space-x-2">
+            <Avatar size="xs" name="Active Employee" />
+            <span className="text-sm">
+              <Trans>{employeeIds.length} Active</Trans>
+            </span>
+          </HStack>
+        )}
+
+        {showCustomer && item.customerId && (
+          <HStack className="justify-start space-x-2">
+            <LuSquareUser className="text-muted-foreground" />
+            <HStack className="truncate no-underline hover:no-underline">
+              <Avatar size="xs" name={customer?.name ?? ""} />
+              <span>{customer?.name}</span>
+            </HStack>
+          </HStack>
+        )}
+
+        {Number(item.quantityScrapped) > 0 && (
+          <HStack className="justify-start space-x-2 text-red-500">
+            <LuTrash className="w-4 h-4" />
+            <span className="text-sm">
+              <Trans>{item.quantityScrapped} Scrapped</Trans>
+            </span>
+          </HStack>
+        )}
+      </CardContent>
+      {(item.assignee || (item.tags && item.tags.length > 0)) && (
+        <CardFooter className="items-center justify-start space-2 text-xs flex-wrap">
+          {item.assignee && (
+            <EmployeeAvatar size="xs" employeeId={item.assignee} />
+          )}
+          {item.tags?.map((tag) => (
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="border dark:border-none dark:shadow-button-base"
+            >
+              {tag}
+            </Badge>
+          ))}
+        </CardFooter>
+      )}
+    </Card>
   );
 }
 

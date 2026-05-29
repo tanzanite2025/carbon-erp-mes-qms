@@ -127,7 +127,7 @@ const WebSearchSourceAvatar = ({
   const domain = source.domain || extractDomainFromUrl(source.url || "");
 
   return (
-    <Tooltip delayDuration={100}>
+    <Tooltip delayDuration={200}>
       <TooltipTrigger asChild>
         <motion.div
           className="inline-flex cursor-pointer"

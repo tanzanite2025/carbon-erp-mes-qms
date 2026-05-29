@@ -283,9 +283,9 @@ msgstr "Arraste e solte um arquivo aqui ou clique para selecionar um arquivo"
 msgid "Dragging {0} cancelled."
 msgstr "Arraste de {0} cancelado."
 
+#. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(item.dueDate) )
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString( operation.operationDueDate ) )
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(operation.jobDueDate) )
-#. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(item.dueDate) )
 msgid "Due {0}"
 msgstr "Vencimento {0}"
 
@@ -491,6 +491,9 @@ msgstr "Materiais"
 
 msgid "Maximum number of records reached"
 msgstr "Número máximo de registros atingido"
+
+msgid "MES 车间管理系统需要至少一个车间位置才能使用。请前往 ERP 系统的资源模块创建车间位置。"
+msgstr ""
 
 msgid "Model"
 msgstr "Modelo"
@@ -976,3 +979,15 @@ msgstr "Você registrou entrada às {0}. Você pode editar seu horário de saíd
 
 msgid "You've been clocked in for {hoursElapsed} hours. Did you forget to clock out?"
 msgstr "Você está registrado há {hoursElapsed} horas. Esqueceu de registrar a saída?"
+
+msgid "创建车间位置"
+msgstr ""
+
+msgid "展开/收起"
+msgstr ""
+
+msgid "返回 ERP"
+msgstr ""
+
+msgid "需要创建车间位置"
+msgstr ""

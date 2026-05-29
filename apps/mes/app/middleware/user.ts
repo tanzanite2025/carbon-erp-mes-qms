@@ -23,7 +23,7 @@ export const userMiddleware: MiddlewareFunction = async ({
   const pinIn = consoleMode ? getConsolePinIn(request, companyId) : null;
 
   context.set(userContext, {
-    locationId: location,
+    locationId: location, // 可以是 null，让页面自己处理
     companyId,
     consoleMode,
     effectiveUserId: pinIn?.userId ?? userId,
@@ -32,7 +32,7 @@ export const userMiddleware: MiddlewareFunction = async ({
       : null
   });
 
-  if (updated) {
+  if (updated && location) {
     return redirect(path.to.authenticatedRoot, {
       headers: {
         "Set-Cookie": setLocation(companyId, location)

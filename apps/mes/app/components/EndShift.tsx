@@ -70,7 +70,7 @@ export function EndShift() {
   return (
     <>
       <SidebarMenuButton tooltip={t`End Operations`} onClick={openModal}>
-        <LuCircleStop />
+        <LuCircleStop className="h-5 w-5" />
         <span>
           <Trans>End Operations</Trans>
         </span>
