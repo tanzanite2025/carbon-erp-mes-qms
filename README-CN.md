@@ -16,10 +16,21 @@
 
 ## 📚 文档
 
+### 开发文档
 - **[开发指南.md](./开发指南.md)** - 开发环境配置和常用命令
 - **[配置完成总结.md](./配置完成总结.md)** - 已完成的配置说明
+- **[文档索引.md](./文档索引.md)** - 所有文档的索引
+
+### 架构文档
+- **[ERP与MES架构分析.md](./ERP与MES架构分析.md)** - 系统架构分析（为什么需要两个端口）
 - **[CHINESE_LOCALIZATION_ANALYSIS.md](./CHINESE_LOCALIZATION_ANALYSIS.md)** - 中文本地化分析
-- **[ERP与MES架构分析.md](./ERP与MES架构分析.md)** - 系统架构分析
+
+### 部署文档
+- **[deployment/快速部署指南.md](./deployment/快速部署指南.md)** - 生产环境快速部署（1 小时）
+- **[deployment/README.md](./deployment/README.md)** - 完整的部署和维护指南
+- **[部署改进建议.md](./部署改进建议.md)** - 部署架构分析和成本对比
+
+### Git 文档
 - **[Git仓库迁移指南.md](./Git仓库迁移指南.md)** - 迁移到自己仓库的方法
 - **[Git快速参考.md](./Git快速参考.md)** - Git 常用命令
 
