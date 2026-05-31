@@ -6,38 +6,38 @@
  */
 
 export const dimensions = [
-  { name: "Location", entityType: "Location" },
-  { name: "Department", entityType: "Department" },
-  { name: "Employee", entityType: "Employee" },
-  { name: "Cost Center", entityType: "CostCenter" },
-  { name: "Item Posting Group", entityType: "ItemPostingGroup" },
-  { name: "Customer Type", entityType: "CustomerType" },
-  { name: "Supplier Type", entityType: "SupplierType" },
-  { name: "Work Center", entityType: "WorkCenter" },
-  { name: "Process", entityType: "Process" },
-  { name: "Asset Class", entityType: "FixedAssetClass" },
+  { name: "库位", entityType: "Location" },
+  { name: "部门", entityType: "Department" },
+  { name: "员工", entityType: "Employee" },
+  { name: "成本中心", entityType: "CostCenter" },
+  { name: "物料过账组", entityType: "ItemPostingGroup" },
+  { name: "客户类型", entityType: "CustomerType" },
+  { name: "供应商类型", entityType: "SupplierType" },
+  { name: "工作中心", entityType: "WorkCenter" },
+  { name: "工艺路线", entityType: "Process" },
+  { name: "资产类别", entityType: "FixedAssetClass" },
 ] as const;
 
 export const supplierStatuses = [
-  "Active",
-  "Inactive",
-  "Pending",
-  "Rejected"
+  "启用",
+  "禁用",
+  "待审核",
+  "已拒绝"
 ] as const;
 
 export const customerStatuses = [
-  "Active",
-  "Inactive",
-  "Lead",
-  "On Hold",
-  "Cancelled"
+  "启用",
+  "禁用",
+  "意向客户/线索",
+  "挂起/冻结",
+  "已取消"
 ] as const;
 
-export const scrapReasons = ["Defective", "Damaged", "Quality"] as const;
+export const scrapReasons = ["缺陷/次品", "损坏", "质量不合格"] as const;
 
 export const paymentTerms = [
   {
-    name: "Net 15",
+    name: "15天内付款",
     daysDue: 15,
     calculationMethod: "Net",
     daysDiscount: 0,
@@ -45,7 +45,7 @@ export const paymentTerms = [
     createdBy: "system"
   },
   {
-    name: "Net 30",
+    name: "30天内付款",
     daysDue: 30,
     calculationMethod: "Net",
     daysDiscount: 0,
@@ -53,7 +53,7 @@ export const paymentTerms = [
     createdBy: "system"
   },
   {
-    name: "Net 60",
+    name: "60天内付款",
     daysDue: 60,
     calculationMethod: "Net",
     daysDiscount: 0,
@@ -61,7 +61,7 @@ export const paymentTerms = [
     createdBy: "system"
   },
   {
-    name: "1% 10 Net 30",
+    name: "10天内付款享1%折扣，30天内付款",
     daysDue: 30,
     calculationMethod: "Net",
     daysDiscount: 10,
@@ -69,7 +69,7 @@ export const paymentTerms = [
     createdBy: "system"
   },
   {
-    name: "2% 10 Net 30",
+    name: "10天内付款享2%折扣，30天内付款",
     daysDue: 30,
     calculationMethod: "Net",
     daysDiscount: 10,
@@ -77,7 +77,7 @@ export const paymentTerms = [
     createdBy: "system"
   },
   {
-    name: "COD",
+    name: "货到付款",
     daysDue: 0,
     calculationMethod: "Net",
     daysDiscount: 0,
@@ -85,7 +85,7 @@ export const paymentTerms = [
     createdBy: "system"
   },
   {
-    name: "Prepaid/ Pro forma",
+    name: "预付款/形式发票",
     daysDue: 0,
     calculationMethod: "Net",
     daysDiscount: 0,
@@ -93,7 +93,7 @@ export const paymentTerms = [
     createdBy: "system"
   },
   {
-    name: "Net EOM 10th",
+    name: "月底10日内结清",
     daysDue: 10,
     calculationMethod: "End of Month",
     daysDiscount: 0,
@@ -103,93 +103,93 @@ export const paymentTerms = [
 ] as const;
 
 export const unitOfMeasures = [
-  { name: "Each", code: "EA", createdBy: "system" },
-  { name: "Case", code: "CS", createdBy: "system" },
-  { name: "Pack", code: "PK", createdBy: "system" },
-  { name: "Pallet", code: "PL", createdBy: "system" },
-  { name: "Roll", code: "RL", createdBy: "system" },
-  { name: "Box", code: "BX", createdBy: "system" },
-  { name: "Bag", code: "BG", createdBy: "system" },
-  { name: "Drum", code: "DR", createdBy: "system" },
-  { name: "Gallon", code: "GL", createdBy: "system" },
-  { name: "Liter", code: "LT", createdBy: "system" },
-  { name: "Ounce", code: "OZ", createdBy: "system" },
-  { name: "Pound", code: "LB", createdBy: "system" },
-  { name: "Ton", code: "TN", createdBy: "system" },
-  { name: "Yard", code: "YD", createdBy: "system" },
-  { name: "Meter", code: "MT", createdBy: "system" },
-  { name: "Inch", code: "INCH", createdBy: "system" },
-  { name: "Foot", code: "FOOT", createdBy: "system" }
+  { name: "个", code: "EA", createdBy: "system" },
+  { name: "箱", code: "CS", createdBy: "system" },
+  { name: "包", code: "PK", createdBy: "system" },
+  { name: "托盘", code: "PL", createdBy: "system" },
+  { name: "卷", code: "RL", createdBy: "system" },
+  { name: "盒", code: "BX", createdBy: "system" },
+  { name: "袋", code: "BG", createdBy: "system" },
+  { name: "桶", code: "DR", createdBy: "system" },
+  { name: "加仑", code: "GL", createdBy: "system" },
+  { name: "升", code: "LT", createdBy: "system" },
+  { name: "盎司", code: "OZ", createdBy: "system" },
+  { name: "磅", code: "LB", createdBy: "system" },
+  { name: "吨", code: "TN", createdBy: "system" },
+  { name: "码", code: "YD", createdBy: "system" },
+  { name: "米", code: "MT", createdBy: "system" },
+  { name: "英寸", code: "INCH", createdBy: "system" },
+  { name: "英尺", code: "FOOT", createdBy: "system" }
 ] as const;
 
 export const gaugeTypes = [
-  "Gauge Block",
-  "Caliper - Inside",
-  "Caliper - Outside",
-  "Caliper - Depth",
-  "Micrometer - Outside",
-  "Micrometer - Inside",
-  "Micrometer - Depth",
-  "Dial Indicator",
-  "Height Gauge",
-  "Thread Gauge",
-  "Pin Gauge",
-  "Ring Gauge",
-  "Plug Gauge",
-  "Bore Gauge",
-  "Feeler Gauge",
-  "Surface Plate",
-  "Go/No-Go Gauge",
-  "Profile Gauge",
-  "Coordinate Measuring Machine (CMM)",
-  "Optical Comparator"
+  "量块",
+  "内径卡尺",
+  "外径卡尺",
+  "深度卡尺",
+  "外径千分尺",
+  "内径千分尺",
+  "深度千分尺",
+  "百分表/千分表",
+  "高度计",
+  "螺纹规",
+  "针规",
+  "环规",
+  "塞规",
+  "内径百分表",
+  "塞尺/感觉规",
+  "平板",
+  "通止规",
+  "轮廓样板",
+  "三坐标测量仪 (CMM)",
+  "投影仪/光学比较仪"
 ] as const;
 
 export const failureModes = [
-  "Bearing Failure",
-  "Lubrication Failure",
-  "Electrical Fault",
-  "Leak",
-  "Excessive Wear",
-  "Misalignment",
-  "Overheating",
-  "Cracking/Fatigue",
-  "Blockage",
-  "Excessive Vibration"
+  "轴承故障",
+  "润滑不良",
+  "电气故障",
+  "泄漏",
+  "严重磨损",
+  "对中不良",
+  "过热",
+  "裂纹/疲劳",
+  "堵塞",
+  "异常振动"
 ] as const;
 
 export const nonConformanceTypes = [
-  { name: "Design Error", createdBy: "system" },
-  { name: "Manufacturing Defect", createdBy: "system" },
-  { name: "Process Deviation", createdBy: "system" },
-  { name: "Material Issue", createdBy: "system" },
-  { name: "Testing Failure", createdBy: "system" },
-  { name: "Documentation Error", createdBy: "system" },
-  { name: "Training Issue", createdBy: "system" },
-  { name: "Equipment Malfunction", createdBy: "system" },
-  { name: "Supplier Issue", createdBy: "system" },
-  { name: "Customer Complaint", createdBy: "system" }
+  { name: "设计缺陷", createdBy: "system" },
+  { name: "制造缺陷", createdBy: "system" },
+  { name: "工艺偏差", createdBy: "system" },
+  { name: "材料问题", createdBy: "system" },
+  { name: "测试不合格", createdBy: "system" },
+  { name: "文档错误", createdBy: "system" },
+  { name: "培训缺失", createdBy: "system" },
+  { name: "设备故障", createdBy: "system" },
+  { name: "供应商问题", createdBy: "system" },
+  { name: "客户投诉", createdBy: "system" }
 ] as const;
 
 export const nonConformanceRequiredActions = [
-  { name: "Corrective Action", systemType: "Corrective" as const, createdBy: "system" },
-  { name: "Preventive Action", systemType: "Preventive" as const, createdBy: "system" },
-  { name: "Containment Action", systemType: "Containment" as const, createdBy: "system" },
-  { name: "Verification", systemType: "Verification" as const, createdBy: "system" },
-  { name: "Customer Communication", systemType: "Communication" as const, createdBy: "system" },
-  { name: "Root Cause Analysis", createdBy: "system" },
-  { name: "Inventory", createdBy: "system" },
-  { name: "WIP", createdBy: "system" },
-  { name: "Finished Goods", createdBy: "system" },
-  { name: "Incoming Materials", createdBy: "system" },
-  { name: "Process", createdBy: "system" },
-  { name: "Documentation", createdBy: "system" }
+  { name: "纠正措施", systemType: "Corrective" as const, createdBy: "system" },
+  { name: "预防措施", systemType: "Preventive" as const, createdBy: "system" },
+  { name: "隔离措施", systemType: "Containment" as const, createdBy: "system" },
+  { name: "验证", systemType: "Verification" as const, createdBy: "system" },
+  { name: "客户沟通", systemType: "Communication" as const, createdBy: "system" },
+  { name: "根本原因分析", createdBy: "system" },
+  { name: "库存清查", createdBy: "system" },
+  { name: "在制品检查", createdBy: "system" },
+  { name: "产成品检查", createdBy: "system" },
+  { name: "来料检查", createdBy: "system" },
+  { name: "工艺过程检查", createdBy: "system" },
+  { name: "文档修改", createdBy: "system" }
 ] as const;
 
 export const sequences = [
   {
     table: "journalEntry",
-    name: "Journal Entry",
+    name: "日记账凭证",
     prefix: "JE-%{yyyy}-%{mm}-",
     suffix: null,
     next: 0,
@@ -198,7 +198,7 @@ export const sequences = [
   },
   {
     table: "job",
-    name: "Job",
+    name: "生产工单",
     prefix: "J",
     suffix: null,
     next: 0,
@@ -207,7 +207,7 @@ export const sequences = [
   },
   {
     table: "gauge",
-    name: "Gauge",
+    name: "测量量具规",
     prefix: "G",
     suffix: null,
     next: 0,
@@ -216,7 +216,7 @@ export const sequences = [
   },
   {
     table: "inboundInspection",
-    name: "Inbound Inspection",
+    name: "来料检验单",
     prefix: "II",
     suffix: null,
     next: 0,
@@ -225,7 +225,7 @@ export const sequences = [
   },
   {
     table: "maintenanceDispatch",
-    name: "Maintenance Dispatch",
+    name: "设备保修单",
     prefix: "MAIN",
     suffix: null,
     next: 0,
@@ -234,7 +234,7 @@ export const sequences = [
   },
   {
     table: "nonConformance",
-    name: "Issue",
+    name: "不合格品单",
     prefix: "NCR",
     suffix: null,
     next: 0,
@@ -243,7 +243,7 @@ export const sequences = [
   },
   {
     table: "purchaseOrder",
-    name: "Purchase Order",
+    name: "采购订单",
     prefix: "PO",
     suffix: null,
     next: 0,
@@ -252,7 +252,7 @@ export const sequences = [
   },
   {
     table: "purchaseInvoice",
-    name: "Purchase Invoice",
+    name: "采购发票",
     prefix: "AP",
     suffix: null,
     next: 0,
@@ -261,7 +261,7 @@ export const sequences = [
   },
   {
     table: "purchasingRfq",
-    name: "Purchasing RFQ",
+    name: "采购询价单",
     prefix: "PRFQ",
     suffix: null,
     next: 0,
@@ -270,7 +270,7 @@ export const sequences = [
   },
   {
     table: "receipt",
-    name: "Receipt",
+    name: "收货单",
     prefix: "RE",
     suffix: null,
     next: 0,
@@ -279,7 +279,7 @@ export const sequences = [
   },
   {
     table: "salesRfq",
-    name: "RFQ (Sales)",
+    name: "销售询价单",
     prefix: "RFQ",
     suffix: null,
     next: 0,
@@ -288,7 +288,7 @@ export const sequences = [
   },
   {
     table: "salesOrder",
-    name: "Sales Order",
+    name: "销售订单",
     prefix: "SO",
     suffix: null,
     next: 0,
@@ -297,7 +297,7 @@ export const sequences = [
   },
   {
     table: "salesInvoice",
-    name: "Sales Invoice",
+    name: "销售发票",
     prefix: "AR",
     suffix: null,
     next: 0,
@@ -306,7 +306,7 @@ export const sequences = [
   },
   {
     table: "stockTransfer",
-    name: "Stock Transfer",
+    name: "库存划拨单",
     prefix: "ST",
     suffix: null,
     next: 0,
@@ -315,7 +315,7 @@ export const sequences = [
   },
   {
     table: "quote",
-    name: "Quote",
+    name: "销售报价单",
     prefix: "Q",
     suffix: null,
     next: 0,
@@ -324,7 +324,7 @@ export const sequences = [
   },
   {
     table: "supplierQuote",
-    name: "Supplier Quote",
+    name: "供应商报价单",
     prefix: "SQ",
     suffix: null,
     next: 0,
@@ -333,7 +333,7 @@ export const sequences = [
   },
   {
     table: "shipment",
-    name: "Shipment",
+    name: "发货单",
     prefix: "SHP",
     suffix: null,
     next: 0,
@@ -342,7 +342,7 @@ export const sequences = [
   },
   {
     table: "warehouseTransfer",
-    name: "Warehouse Transfer",
+    name: "库位转移单",
     prefix: "WT",
     suffix: null,
     next: 0,
@@ -351,7 +351,7 @@ export const sequences = [
   },
   {
     table: "fixedAsset",
-    name: "Fixed Asset",
+    name: "固定资产",
     prefix: "FA",
     suffix: null,
     next: 1,
@@ -360,7 +360,7 @@ export const sequences = [
   },
   {
     table: "depreciationRun",
-    name: "Depreciation Run",
+    name: "计提折旧单",
     prefix: "DR",
     suffix: null,
     next: 1,
@@ -500,148 +500,148 @@ export const currencies = [
 //   4000-4999 Revenue | 5000-5999 COGS | 6000-6999 Operating Expenses | 7000-7999 Other Expenses
 export const accounts = [
   // ═══════════════════════════════════════════════════════════
-  // BALANCE SHEET
+  // BALANCE SHEET (资产负债表)
   // ═══════════════════════════════════════════════════════════
-  { key: "balance-sheet", number: null, name: "Balance Sheet", isGroup: true, parentKey: null, accountType: null, incomeBalance: "Balance Sheet", class: null, consolidatedRate: "Current", isSystem: true, createdBy: "system" },
+  { key: "balance-sheet", number: null, name: "资产负债表", isGroup: true, parentKey: null, accountType: null, incomeBalance: "Balance Sheet", class: null, consolidatedRate: "Current", isSystem: true, createdBy: "system" },
 
-  // ─── 1000-1999: ASSETS ───
-  { key: "assets", number: null, name: "Assets", isGroup: true, parentKey: "balance-sheet", accountType: "Other Current Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  // ─── 1000-1999: ASSETS (资产) ───
+  { key: "assets", number: null, name: "资产", isGroup: true, parentKey: "balance-sheet", accountType: "Other Current Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
 
-  // Cash & Bank
-  { key: "cash-and-bank", number: null, name: "Cash & Bank", isGroup: true, parentKey: "assets", accountType: "Bank", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1010", number: "1010", name: "Bank - Cash", isGroup: false, parentKey: "cash-and-bank", accountType: "Bank", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1020", number: "1020", name: "Bank - Local Currency", isGroup: false, parentKey: "cash-and-bank", accountType: "Bank", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1030", number: "1030", name: "Bank - Foreign Currency", isGroup: false, parentKey: "cash-and-bank", accountType: "Bank", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  // Cash & Bank (货币资金)
+  { key: "cash-and-bank", number: null, name: "货币资金", isGroup: true, parentKey: "assets", accountType: "Bank", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1010", number: "1010", name: "库存现金", isGroup: false, parentKey: "cash-and-bank", accountType: "Bank", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1020", number: "1020", name: "银行存款 - 本币", isGroup: false, parentKey: "cash-and-bank", accountType: "Bank", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1030", number: "1030", name: "银行存款 - 外币", isGroup: false, parentKey: "cash-and-bank", accountType: "Bank", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
 
-  // Receivables
-  { key: "receivables", number: null, name: "Receivables", isGroup: true, parentKey: "assets", accountType: "Accounts Receivable", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1110", number: "1110", name: "Accounts Receivable", isGroup: false, parentKey: "receivables", accountType: "Accounts Receivable", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1130", number: "1130", name: "Inter-Company Receivables", isGroup: false, parentKey: "receivables", accountType: "Accounts Receivable", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  // Receivables (应收款项)
+  { key: "receivables", number: null, name: "应收款项", isGroup: true, parentKey: "assets", accountType: "Accounts Receivable", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1110", number: "1110", name: "应收账款", isGroup: false, parentKey: "receivables", accountType: "Accounts Receivable", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1130", number: "1130", name: "内部往来应收款", isGroup: false, parentKey: "receivables", accountType: "Accounts Receivable", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
 
-  // Inventory
-  { key: "inventory", number: null, name: "Inventory & Stock", isGroup: true, parentKey: "assets", accountType: "Inventory", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1210", number: "1210", name: "Inventory", isGroup: false, parentKey: "inventory", accountType: "Inventory", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1230", number: "1230", name: "Work In Progress (WIP)", isGroup: false, parentKey: "inventory", accountType: "Inventory", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1240", number: "1240", name: "Inventory Reserves / Allowances", isGroup: false, parentKey: "inventory", accountType: "Inventory", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  // Inventory (存货)
+  { key: "inventory", number: null, name: "存货", isGroup: true, parentKey: "assets", accountType: "Inventory", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1210", number: "1210", name: "原材料/库存商品", isGroup: false, parentKey: "inventory", accountType: "Inventory", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1230", number: "1230", name: "在制品 (WIP)", isGroup: false, parentKey: "inventory", accountType: "Inventory", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1240", number: "1240", name: "存货跌价准备", isGroup: false, parentKey: "inventory", accountType: "Inventory", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
 
-  // Property, Plant & Equipment
-  { key: "ppe", number: null, name: "Property, Plant & Equipment", isGroup: true, parentKey: "assets", accountType: "Fixed Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1310", number: "1310", name: "Fixed Asset Acquisition Cost", isGroup: false, parentKey: "ppe", accountType: "Fixed Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1320", number: "1320", name: "Fixed Asset Acquisition Cost on Disposal", isGroup: false, parentKey: "ppe", accountType: "Fixed Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1330", number: "1330", name: "Accumulated Depreciation", isGroup: false, parentKey: "ppe", accountType: "Accumulated Depreciation", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1340", number: "1340", name: "Accumulated Depreciation on Disposal", isGroup: false, parentKey: "ppe", accountType: "Accumulated Depreciation", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1350", number: "1350", name: "Machinery & Equipment", isGroup: false, parentKey: "ppe", accountType: "Fixed Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1360", number: "1360", name: "Buildings & Leasehold Improvements", isGroup: false, parentKey: "ppe", accountType: "Fixed Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  // Property, Plant & Equipment (固定资产)
+  { key: "ppe", number: null, name: "固定资产", isGroup: true, parentKey: "assets", accountType: "Fixed Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1310", number: "1310", name: "固定资产原值", isGroup: false, parentKey: "ppe", accountType: "Fixed Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1320", number: "1320", name: "待处置固定资产原值", isGroup: false, parentKey: "ppe", accountType: "Fixed Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1330", number: "1330", name: "累计折旧", isGroup: false, parentKey: "ppe", accountType: "Accumulated Depreciation", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1340", number: "1340", name: "待处置累计折旧", isGroup: false, parentKey: "ppe", accountType: "Accumulated Depreciation", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1350", number: "1350", name: "机器设备", isGroup: false, parentKey: "ppe", accountType: "Fixed Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1360", number: "1360", name: "房屋及建筑物", isGroup: false, parentKey: "ppe", accountType: "Fixed Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
 
-  // Other Assets
-  { key: "other-assets", number: null, name: "Other Assets", isGroup: true, parentKey: "assets", accountType: "Other Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1410", number: "1410", name: "Intangible Assets", isGroup: false, parentKey: "other-assets", accountType: "Other Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1420", number: "1420", name: "Accumulated Amortization", isGroup: false, parentKey: "other-assets", accountType: "Other Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1430", number: "1430", name: "Investments in Subsidiaries", isGroup: false, parentKey: "other-assets", accountType: "Investments", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
-  { key: "1440", number: "1440", name: "Deferred Tax Assets", isGroup: false, parentKey: "other-assets", accountType: "Other Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  // Other Assets (其他资产)
+  { key: "other-assets", number: null, name: "其他资产", isGroup: true, parentKey: "assets", accountType: "Other Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1410", number: "1410", name: "无形资产", isGroup: false, parentKey: "other-assets", accountType: "Other Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1420", number: "1420", name: "累计摊销", isGroup: false, parentKey: "other-assets", accountType: "Other Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1430", number: "1430", name: "长期股权投资", isGroup: false, parentKey: "other-assets", accountType: "Investments", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
+  { key: "1440", number: "1440", name: "递延所得税资产", isGroup: false, parentKey: "other-assets", accountType: "Other Asset", incomeBalance: "Balance Sheet", class: "Asset", consolidatedRate: "Current", createdBy: "system" },
 
-  // ─── 2000-2999: LIABILITIES ───
-  { key: "liabilities", number: null, name: "Liabilities", isGroup: true, parentKey: "balance-sheet", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  // ─── 2000-2999: LIABILITIES (负债) ───
+  { key: "liabilities", number: null, name: "负债", isGroup: true, parentKey: "balance-sheet", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
 
-  // Payables
-  { key: "payables", number: null, name: "Payables", isGroup: true, parentKey: "liabilities", accountType: "Accounts Payable", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2010", number: "2010", name: "Accounts Payable", isGroup: false, parentKey: "payables", accountType: "Accounts Payable", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2020", number: "2020", name: "Inter-Company Payables", isGroup: false, parentKey: "payables", accountType: "Accounts Payable", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  // Payables (应付款项)
+  { key: "payables", number: null, name: "应付款项", isGroup: true, parentKey: "liabilities", accountType: "Accounts Payable", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2010", number: "2010", name: "应付账款", isGroup: false, parentKey: "payables", accountType: "Accounts Payable", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2020", number: "2020", name: "内部往来应付款", isGroup: false, parentKey: "payables", accountType: "Accounts Payable", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
 
-  // Current Liabilities
-  { key: "current-liabilities", number: null, name: "Current Liabilities", isGroup: true, parentKey: "liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2110", number: "2110", name: "Customer Prepayments", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2125", number: "2125", name: "GR/IR Clearing", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2130", number: "2130", name: "Inventory Shipped Not Invoiced", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2140", number: "2140", name: "Accrued Expenses", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2150", number: "2150", name: "Accrued Wages & Salaries", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2160", number: "2160", name: "Deferred Revenue", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2170", number: "2170", name: "Short-Term Loans", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  // Current Liabilities (流动负债)
+  { key: "current-liabilities", number: null, name: "流动负债", isGroup: true, parentKey: "liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2110", number: "2110", name: "预收账款", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2125", number: "2125", name: "暂估应付款 (GR/IR)", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2130", number: "2130", name: "已发货未开票存货", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2140", number: "2140", name: "应付利息/预提费用", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2150", number: "2150", name: "应付职工薪酬", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2160", number: "2160", name: "递延收益", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2170", number: "2170", name: "短期借款", isGroup: false, parentKey: "current-liabilities", accountType: "Other Current Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
 
-  // Tax Liabilities
-  { key: "tax-liabilities", number: null, name: "Tax Liabilities", isGroup: true, parentKey: "liabilities", accountType: "Tax", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2210", number: "2210", name: "Sales Tax Payable", isGroup: false, parentKey: "tax-liabilities", accountType: "Tax", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2220", number: "2220", name: "Purchase Tax Payable", isGroup: false, parentKey: "tax-liabilities", accountType: "Tax", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2230", number: "2230", name: "Reverse Charge Tax Payable", isGroup: false, parentKey: "tax-liabilities", accountType: "Tax", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  // Tax Liabilities (应交税费)
+  { key: "tax-liabilities", number: null, name: "应交税费", isGroup: true, parentKey: "liabilities", accountType: "Tax", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2210", number: "2210", name: "应交增值税 (销项)", isGroup: false, parentKey: "tax-liabilities", accountType: "Tax", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2220", number: "2220", name: "应交增值税 (进项)", isGroup: false, parentKey: "tax-liabilities", accountType: "Tax", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2230", number: "2230", name: "反向征税税金", isGroup: false, parentKey: "tax-liabilities", accountType: "Tax", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
 
-  // Long-Term Liabilities
-  { key: "long-term-liabilities", number: null, name: "Long-Term Liabilities", isGroup: true, parentKey: "liabilities", accountType: "Long Term Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2410", number: "2410", name: "Long-Term Debt / Loans", isGroup: false, parentKey: "long-term-liabilities", accountType: "Long Term Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2420", number: "2420", name: "Deferred Tax Liabilities", isGroup: false, parentKey: "long-term-liabilities", accountType: "Long Term Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
-  { key: "2430", number: "2430", name: "Pension Obligations", isGroup: false, parentKey: "long-term-liabilities", accountType: "Long Term Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  // Long-Term Liabilities (非流动负债)
+  { key: "long-term-liabilities", number: null, name: "非流动负债", isGroup: true, parentKey: "liabilities", accountType: "Long Term Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2410", number: "2410", name: "长期借款", isGroup: false, parentKey: "long-term-liabilities", accountType: "Long Term Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2420", number: "2420", name: "递延所得税负债", isGroup: false, parentKey: "long-term-liabilities", accountType: "Long Term Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
+  { key: "2430", number: "2430", name: "应付养老金", isGroup: false, parentKey: "long-term-liabilities", accountType: "Long Term Liability", incomeBalance: "Balance Sheet", class: "Liability", consolidatedRate: "Current", createdBy: "system" },
 
-  // ─── 3000-3999: EQUITY ───
-  { key: "equity", number: null, name: "Equity", isGroup: true, parentKey: "balance-sheet", accountType: "Equity - No Close", incomeBalance: "Balance Sheet", class: "Equity", consolidatedRate: "Historical", createdBy: "system" },
-  { key: "3010", number: "3010", name: "Common Stock / Share Capital", isGroup: false, parentKey: "equity", accountType: "Equity - No Close", incomeBalance: "Balance Sheet", class: "Equity", consolidatedRate: "Historical", createdBy: "system" },
-  { key: "3100", number: "3100", name: "Retained Earnings", isGroup: false, parentKey: "equity", accountType: "Retained Earnings", incomeBalance: "Balance Sheet", class: "Equity", consolidatedRate: "Historical", createdBy: "system" },
-  { key: "3200", number: "3200", name: "Reserves (Currency Translation)", isGroup: false, parentKey: "equity", accountType: "Equity - Close", incomeBalance: "Balance Sheet", class: "Equity", consolidatedRate: "Historical", createdBy: "system" },
-  { key: "3300", number: "3300", name: "Dividends Payable", isGroup: false, parentKey: "equity", accountType: "Equity - Close", incomeBalance: "Balance Sheet", class: "Equity", consolidatedRate: "Historical", createdBy: "system" },
+  // ─── 3000-3999: EQUITY (所有者权益) ───
+  { key: "equity", number: null, name: "所有者权益", isGroup: true, parentKey: "balance-sheet", accountType: "Equity - No Close", incomeBalance: "Balance Sheet", class: "Equity", consolidatedRate: "Historical", createdBy: "system" },
+  { key: "3010", number: "3010", name: "实收资本 (股本)", isGroup: false, parentKey: "equity", accountType: "Equity - No Close", incomeBalance: "Balance Sheet", class: "Equity", consolidatedRate: "Historical", createdBy: "system" },
+  { key: "3100", number: "3100", name: "未分配利润", isGroup: false, parentKey: "equity", accountType: "Retained Earnings", incomeBalance: "Balance Sheet", class: "Equity", consolidatedRate: "Historical", createdBy: "system" },
+  { key: "3200", number: "3200", name: "外币报表折算差额", isGroup: false, parentKey: "equity", accountType: "Equity - Close", incomeBalance: "Balance Sheet", class: "Equity", consolidatedRate: "Historical", createdBy: "system" },
+  { key: "3300", number: "3300", name: "应付股利", isGroup: false, parentKey: "equity", accountType: "Equity - Close", incomeBalance: "Balance Sheet", class: "Equity", consolidatedRate: "Historical", createdBy: "system" },
 
   // ═══════════════════════════════════════════════════════════
-  // INCOME STATEMENT
+  // INCOME STATEMENT (损益表)
   // ═══════════════════════════════════════════════════════════
-  { key: "income-statement", number: null, name: "Income Statement", isGroup: true, parentKey: null, accountType: null, incomeBalance: "Income Statement", class: null, consolidatedRate: "Average", isSystem: true, createdBy: "system" },
+  { key: "income-statement", number: null, name: "损益表", isGroup: true, parentKey: null, accountType: null, incomeBalance: "Income Statement", class: null, consolidatedRate: "Average", isSystem: true, createdBy: "system" },
 
-  // ─── 4000-4999: REVENUE ───
-  { key: "revenue", number: null, name: "Revenue", isGroup: true, parentKey: "income-statement", accountType: "Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
-  { key: "4010", number: "4010", name: "Sales", isGroup: false, parentKey: "revenue", accountType: "Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
-  { key: "4020", number: "4020", name: "Sales Discounts", isGroup: false, parentKey: "revenue", accountType: "Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
-  { key: "4030", number: "4030", name: "Manufacturing Services Revenue", isGroup: false, parentKey: "revenue", accountType: "Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
+  // ─── 4000-4999: REVENUE (营业收入) ───
+  { key: "revenue", number: null, name: "营业收入", isGroup: true, parentKey: "income-statement", accountType: "Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
+  { key: "4010", number: "4010", name: "主营业务收入", isGroup: false, parentKey: "revenue", accountType: "Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
+  { key: "4020", number: "4020", name: "销售折让/折扣", isGroup: false, parentKey: "revenue", accountType: "Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
+  { key: "4030", number: "4030", name: "加工服务收入", isGroup: false, parentKey: "revenue", accountType: "Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
 
-  // Other Income
-  { key: "other-income", number: null, name: "Other Income", isGroup: true, parentKey: "income-statement", accountType: "Other Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
-  { key: "4110", number: "4110", name: "Scrap Sales", isGroup: false, parentKey: "other-income", accountType: "Other Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
-  { key: "4120", number: "4120", name: "Foreign Exchange Gains", isGroup: false, parentKey: "other-income", accountType: "Other Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
+  // Other Income (其他收益)
+  { key: "other-income", number: null, name: "其他收益", isGroup: true, parentKey: "income-statement", accountType: "Other Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
+  { key: "4110", number: "4110", name: "废料销售收入", isGroup: false, parentKey: "other-income", accountType: "Other Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
+  { key: "4120", number: "4120", name: "汇兑损益 (收益)", isGroup: false, parentKey: "other-income", accountType: "Other Income", incomeBalance: "Income Statement", class: "Revenue", consolidatedRate: "Average", createdBy: "system" },
 
-  // ─── 5000-5999: COST OF GOODS SOLD ───
-  { key: "cogs", number: null, name: "Cost of Goods Sold", isGroup: true, parentKey: "income-statement", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "5010", number: "5010", name: "Cost of Goods Sold - Direct", isGroup: false, parentKey: "cogs", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "5050", number: "5050", name: "Indirect Materials & Services", isGroup: false, parentKey: "cogs", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "5060", number: "5060", name: "Labor & Machine Absorption", isGroup: false, parentKey: "cogs", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  // ─── 5000-5999: COST OF GOODS SOLD (营业成本) ───
+  { key: "cogs", number: null, name: "营业成本", isGroup: true, parentKey: "income-statement", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "5010", number: "5010", name: "主营业务成本", isGroup: false, parentKey: "cogs", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "5050", number: "5050", name: "间接材料与服务成本", isGroup: false, parentKey: "cogs", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "5060", number: "5060", name: "人工及机器折旧分摊", isGroup: false, parentKey: "cogs", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
 
-  // Variances
-  { key: "variances", number: null, name: "Variances", isGroup: true, parentKey: "cogs", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "5210", number: "5210", name: "Purchase Price Variance", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "5220", number: "5220", name: "Material Usage Variance", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "5230", number: "5230", name: "Labor & Machine Variance", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "5240", number: "5240", name: "Overhead Variance", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "5250", number: "5250", name: "Lot Size Variance", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "5260", number: "5260", name: "Subcontracting Variance", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  // Variances (成本差异)
+  { key: "variances", number: null, name: "成本差异", isGroup: true, parentKey: "cogs", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "5210", number: "5210", name: "材料采购价格差异 (PPV)", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "5220", number: "5220", name: "原材料用量差异", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "5230", number: "5230", name: "人工及工时差异", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "5240", number: "5240", name: "制造费用差异", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "5250", number: "5250", name: "批量差异", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "5260", number: "5260", name: "委外加工差异", isGroup: false, parentKey: "variances", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
 
-  // Inventory Adjustments
-  { key: "inventory-adjustments", number: null, name: "Inventory Adjustments", isGroup: true, parentKey: "cogs", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "5310", number: "5310", name: "Inventory Adjustment", isGroup: false, parentKey: "inventory-adjustments", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  // Inventory Adjustments (存货盘点损益)
+  { key: "inventory-adjustments", number: null, name: "存货盘点损益", isGroup: true, parentKey: "cogs", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "5310", number: "5310", name: "存货盘点差异调整", isGroup: false, parentKey: "inventory-adjustments", accountType: "Cost of Goods Sold", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
 
-  // ─── 6000-6999: OPERATING EXPENSES ───
-  { key: "operating-expenses", number: null, name: "Operating Expenses", isGroup: true, parentKey: "income-statement", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6010", number: "6010", name: "Maintenance Expense", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6020", number: "6020", name: "Sales Commissions", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6030", number: "6030", name: "Advertising & Marketing", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6040", number: "6040", name: "Freight & Shipping Out", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6050", number: "6050", name: "Bad Debts Expense", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6060", number: "6060", name: "Salaries - Administrative", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6070", number: "6070", name: "Rent & Utilities (Non-Factory)", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6080", number: "6080", name: "Professional Fees", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6090", number: "6090", name: "Travel & Entertainment", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6100", number: "6100", name: "Insurance", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6110", number: "6110", name: "Bank Charges & Fees", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  // ─── 6000-6999: OPERATING EXPENSES (期间费用) ───
+  { key: "operating-expenses", number: null, name: "期间费用 (管理/销售费用)", isGroup: true, parentKey: "income-statement", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6010", number: "6010", name: "维修费用", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6020", number: "6020", name: "销售佣金", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6030", number: "6030", name: "广告及宣传费", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6040", number: "6040", name: "运输及装卸费", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6050", number: "6050", name: "信用减值损失 (坏账准备)", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6060", number: "6060", name: "管理人员薪酬", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6070", number: "6070", name: "租赁及水电费", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6080", number: "6080", name: "中介及咨询审计费", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6090", number: "6090", name: "差旅及业务招待费", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6100", number: "6100", name: "保险费", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6110", number: "6110", name: "财务费用 - 手续费", isGroup: false, parentKey: "operating-expenses", accountType: "Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
 
-  // Depreciation & Amortization
-  { key: "depreciation", number: null, name: "Depreciation & Amortization", isGroup: true, parentKey: "operating-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6310", number: "6310", name: "Depreciation Expense", isGroup: false, parentKey: "depreciation", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "6320", number: "6320", name: "Gains and Losses on Disposal", isGroup: false, parentKey: "depreciation", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  // Depreciation & Amortization (折旧与摊销费用)
+  { key: "depreciation", number: null, name: "折旧与摊销费用", isGroup: true, parentKey: "operating-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6310", number: "6310", name: "折旧费用", isGroup: false, parentKey: "depreciation", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "6320", number: "6320", name: "资产处置损益", isGroup: false, parentKey: "depreciation", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
 
-  // ─── 7000-7999: OTHER / NON-OPERATING EXPENSES ───
-  { key: "other-expenses", number: null, name: "Other Expenses", isGroup: true, parentKey: "income-statement", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "7010", number: "7010", name: "Interest Expense", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "7020", number: "7020", name: "Supplier Payment Discounts", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "7030", number: "7030", name: "Customer Payment Discounts", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "7040", number: "7040", name: "Service Charge Account", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "7050", number: "7050", name: "Rounding Account", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "7060", number: "7060", name: "Foreign Exchange Losses", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "7070", number: "7070", name: "Income Tax Expense", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "7080", number: "7080", name: "R&D Expenses", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
-  { key: "7090", number: "7090", name: "Deferred Tax Expense", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  // ─── 7000-7999: OTHER / NON-OPERATING EXPENSES (其他支出) ───
+  { key: "other-expenses", number: null, name: "其他支出/营业外支出", isGroup: true, parentKey: "income-statement", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "7010", number: "7010", name: "财务费用 - 利息支出", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "7020", number: "7020", name: "现金折扣 (供应商)", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "7030", number: "7030", name: "现金折扣 (客户)", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "7040", number: "7040", name: "服务费支出", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "7050", number: "7050", name: "尾差调整账户", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "7060", number: "7060", name: "汇兑损益 (损失)", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "7070", number: "7070", name: "所得税费用", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "7080", number: "7080", name: "研发费用", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
+  { key: "7090", number: "7090", name: "递延所得税费用", isGroup: false, parentKey: "other-expenses", accountType: "Other Expense", incomeBalance: "Income Statement", class: "Expense", consolidatedRate: "Average", createdBy: "system" },
 ] as const;
 
 export const accountDefaults = {
@@ -690,7 +690,7 @@ export const accountDefaults = {
 
 export const fixedAssetClasses = [
   {
-    name: "Buildings",
+    name: "房屋及建筑物",
     depreciationMethod: "Straight Line" as const,
     usefulLifeMonths: 468,
     residualValuePercent: 0,
@@ -702,7 +702,7 @@ export const fixedAssetClasses = [
     disposalAccount: "6320",
   },
   {
-    name: "Machinery & Equipment",
+    name: "机器设备",
     depreciationMethod: "Straight Line" as const,
     usefulLifeMonths: 120,
     residualValuePercent: 0,
@@ -714,7 +714,7 @@ export const fixedAssetClasses = [
     disposalAccount: "6320",
   },
   {
-    name: "Vehicles",
+    name: "运输工具",
     depreciationMethod: "Straight Line" as const,
     usefulLifeMonths: 60,
     residualValuePercent: 0,
@@ -738,34 +738,34 @@ export const fiscalYearSettings = {
  * Required for inventory quantities, jobs, and other location-dependent features
  */
 export const defaultLocation = {
-  name: "Headquarters",
-  addressLine1: "123 Main Street",
-  city: "Austin",
-  stateProvince: "TX",
-  postalCode: "78701",
-  countryCode: "US",
-  timezone: "America/Chicago",
+  name: "总部仓库",
+  addressLine1: "高新技术开发区科创路88号",
+  city: "深圳市",
+  stateProvince: "广东省",
+  postalCode: "518000",
+  countryCode: "CN",
+  timezone: "Asia/Shanghai",
   createdBy: "system"
 } as const;
 
 export const groups = [
   {
     idPrefix: "00000000-0000",
-    name: "All Employees",
+    name: "全体员工",
     isCustomerTypeGroup: false,
     isEmployeeTypeGroup: true,
     isSupplierTypeGroup: false
   },
   {
     idPrefix: "11111111-1111",
-    name: "All Customers",
+    name: "全体客户",
     isCustomerTypeGroup: true,
     isEmployeeTypeGroup: false,
     isSupplierTypeGroup: false
   },
   {
     idPrefix: "22222222-2222",
-    name: "All Suppliers",
+    name: "全体供应商",
     isCustomerTypeGroup: false,
     isEmployeeTypeGroup: false,
     isSupplierTypeGroup: true

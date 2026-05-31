@@ -147,7 +147,7 @@ serve(async (req: Request) => {
         .insertInto("employeeType")
         .values([
           {
-            name: "Admin",
+            name: "管理员",
             companyId,
             protected: true,
             systemType: "Admin" as const,

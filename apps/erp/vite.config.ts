@@ -10,6 +10,26 @@ export default defineConfig(({ isSsrBuild, mode }) => {
   applyDotenvToProcessEnv(mode, __dirname);
 
   return {
+    // 共享缓存目录，加速预构建
+    cacheDir: "../../node_modules/.vite/erp",
+    
+    // 优化依赖预构建
+    optimizeDeps: {
+      force: false,  // 不强制重新预构建
+      include: [
+        // 明确列出常用依赖，加速预构建
+        "react",
+        "react-dom",
+        "@remix-run/react",
+        "@tanstack/react-query",
+        "zod",
+        "zustand",
+        "react-hook-form",
+        "date-fns",
+        "lucide-react"
+      ]
+    },
+    
     build: {
       minify: true,
       rolldownOptions: {
@@ -41,6 +61,15 @@ export default defineConfig(({ isSsrBuild, mode }) => {
       allowedHosts: [".ngrok-free.app", ".ngrok-free.dev", ".dev", ".localhost"],
       watch: {
         awaitWriteFinish: { stabilityThreshold: 250 },
+        // 减少文件监听，提升性能
+        ignored: [
+          "**/node_modules/**",
+          "**/.git/**",
+          "**/dist/**",
+          "**/build/**",
+          "**/.turbo/**",
+          "**/.cache/**"
+        ]
       },
     },
     plugins: [

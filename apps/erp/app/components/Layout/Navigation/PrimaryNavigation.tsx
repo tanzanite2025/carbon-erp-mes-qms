@@ -1,4 +1,4 @@
-import { cn, useIsMobile, VStack } from "@carbon/react";
+import { cn } from "@carbon/react";
 import {
   closestCenter,
   DndContext,
@@ -8,15 +8,15 @@ import {
   useSensors
 } from "@dnd-kit/core";
 import {
-  SortableContext,
-  verticalListSortingStrategy
+  horizontalListSortingStrategy,
+  SortableContext
 } from "@dnd-kit/sortable";
+import { motion } from "framer-motion";
 import type { AnchorHTMLAttributes } from "react";
 import { forwardRef, memo, useEffect } from "react";
-import { LuChevronLeft, LuChevronRight, LuSettings2 } from "react-icons/lu";
+import { LuSettings2 } from "react-icons/lu";
 import { Link, useMatches } from "react-router";
 import { useModules, useOptimisticLocation, useSettingsModule } from "~/hooks";
-import { useUIStore } from "~/stores/ui";
 import type { Authenticated, NavItem } from "~/types";
 import { HiddenModulesPopover } from "./HiddenModulesPopover";
 import { NavigationEditBar } from "./NavigationEditBar";
@@ -40,14 +40,6 @@ const PrimaryNavigation = () => {
 
   const editMode = useNavigationEditMode();
 
-  // 使用 UI Store 管理固定状态（持久化）
-  const isMobile = useIsMobile();
-  const isPinned = useUIStore((state) => state.isSidebarPinned);
-  const setSidebarPinned = useUIStore((state) => state.setSidebarPinned);
-
-  // 移动端强制不固定
-  const effectiveIsPinned = isMobile ? false : isPinned;
-
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
     useSensor(KeyboardSensor)
@@ -62,169 +54,93 @@ const PrimaryNavigation = () => {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [editMode.isEditing, editMode.cancelEditMode]);
 
-  // 展开状态：只有固定展开或编辑模式
-  const isOpen = effectiveIsPinned || editMode.isEditing;
-
-  // 点击切换按钮：直接设置相反的状态
-  const handleTogglePin = () => {
-    setSidebarPinned(!effectiveIsPinned);
-  };
-
   return (
-    <div className="w-14 h-full flex-col z-50 hidden sm:flex">
+    <div className="w-full flex items-center justify-center py-2 z-50">
       <nav
-        data-state={isOpen ? "expanded" : "collapsed"}
+        data-state="expanded"
         className={cn(
-          "bg-background py-2 group z-10 h-full w-14 data-[state=expanded]:w-[13rem]",
-          "flex flex-col justify-between data-[state=expanded]:shadow-xl data-[state=expanded]:border-r data-[state=expanded]:border-border",
-          "transition-width duration-200",
-          "hide-scrollbar overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-accent"
+          "group flex flex-row items-center gap-1.5 p-1 bg-muted/40 dark:bg-muted/10 border border-dashed border-border/80 rounded-full w-fit max-w-full overflow-x-auto hide-scrollbar scrollbar-none"
         )}
       >
-        <VStack
-          spacing={1}
-          className="flex flex-col justify-between h-full px-2"
-        >
-          <VStack spacing={1}>
-            {/* 切换按钮 - 与其他导航项样式一致 */}
-            {!isMobile && (
-              <button
-                type="button"
-                onClick={handleTogglePin}
-                className={cn(
-                  "relative",
-                  "h-10 w-10 group-data-[state=expanded]:w-full",
-                  "flex items-center rounded-md",
-                  "group-data-[state=collapsed]:justify-center",
-                  "group-data-[state=expanded]:-space-x-2",
-                  "font-medium shrink-0 inline-flex items-center justify-center select-none",
-                  "transition-[background-color,color,width] duration-100 ease-out",
-                  "hover:bg-accent hover:text-accent-foreground",
-                  "focus:!outline-none focus:!ring-0 active:!outline-none active:!ring-0",
-                  "after:pointer-events-none after:absolute after:-inset-[3px] after:rounded-lg after:border after:border-blue-500 after:opacity-0 after:ring-2 after:ring-blue-500/20 after:transition-opacity focus-visible:after:opacity-100 active:after:opacity-0"
-                )}
-                aria-label={effectiveIsPinned ? "收起侧边栏" : "展开侧边栏"}
-                title={effectiveIsPinned ? "收起侧边栏" : "展开侧边栏"}
+        {editMode.isEditing ? (
+          <div className="flex items-center gap-1.5 px-1">
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={editMode.handleDragEnd}
+            >
+              <SortableContext
+                items={editMode.visibleDraft.map((m) => m.key)}
+                strategy={horizontalListSortingStrategy}
               >
-                <div className="absolute left-3 top-3 flex items-center justify-center text-primary">
-                  {effectiveIsPinned ? (
-                    <LuChevronLeft className="h-5 w-5" />
-                  ) : (
-                    <LuChevronRight className="h-5 w-5" />
-                  )}
-                </div>
-                <span
-                  className={cn(
-                    "min-w-[128px] text-sm text-left",
-                    "absolute left-7 group-data-[state=expanded]:left-12",
-                    "opacity-0 group-data-[state=expanded]:opacity-100"
-                  )}
-                >
-                  {effectiveIsPinned ? "收起" : "展开"}
-                </span>
-              </button>
-            )}
-
-            {editMode.isEditing ? (
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={editMode.handleDragEnd}
-              >
-                <SortableContext
-                  items={editMode.visibleDraft.map((m) => m.key)}
-                  strategy={verticalListSortingStrategy}
-                >
-                  {editMode.visibleDraft.map((module) => (
-                    <SortableNavItem
-                      key={module.key}
-                      module={module}
-                      isOpen={isOpen}
-                      onToggleHidden={editMode.toggleHidden}
-                    />
-                  ))}
-                </SortableContext>
-              </DndContext>
-            ) : (
-              links.map((link) => {
-                const m = getModule(link.to);
-                const moduleMatches = matchedModules.has(m);
-                const isActive = currentModule === m || moduleMatches;
-                return (
-                  <NavigationIconLink
-                    key={link.name}
-                    link={link}
-                    isActive={isActive}
-                    isOpen={isOpen}
+                {editMode.visibleDraft.map((module) => (
+                  <SortableNavItem
+                    key={module.key}
+                    module={module}
+                    isOpen={true}
+                    onToggleHidden={editMode.toggleHidden}
                   />
-                );
-              })
-            )}
+                ))}
+              </SortableContext>
+            </DndContext>
+          </div>
+        ) : (
+          <div className="flex items-center gap-1">
+            {links.map((link) => {
+              const m = getModule(link.to);
+              const moduleMatches = matchedModules.has(m);
+              const isActive = currentModule === m || moduleMatches;
+              return (
+                <NavigationIconLink
+                  key={link.name}
+                  link={link}
+                  isActive={isActive}
+                  isOpen={true}
+                />
+              );
+            })}
+          </div>
+        )}
 
-            {editMode.isEditing && (
-              <HiddenModulesPopover
-                hiddenModules={editMode.hiddenDraft}
-                onToggleHidden={editMode.toggleHidden}
+        {editMode.isEditing && (
+          <HiddenModulesPopover
+            hiddenModules={editMode.hiddenDraft}
+            onToggleHidden={editMode.toggleHidden}
+          />
+        )}
+
+        {settingsModule &&
+          !editMode.isEditing &&
+          (() => {
+            const m = getModule(settingsModule.to);
+            const moduleMatches = matchedModules.has(m);
+            const isActive = currentModule === m || moduleMatches;
+            return (
+              <NavigationIconLink
+                link={settingsModule}
+                isActive={isActive}
+                isOpen={true}
               />
-            )}
-          </VStack>
+            );
+          })()}
 
-          <VStack spacing={1}>
-            {settingsModule &&
-              !editMode.isEditing &&
-              (() => {
-                const m = getModule(settingsModule.to);
-                const moduleMatches = matchedModules.has(m);
-                const isActive = currentModule === m || moduleMatches;
-                return (
-                  <NavigationIconLink
-                    link={settingsModule}
-                    isActive={isActive}
-                    isOpen={isOpen}
-                  />
-                );
-              })()}
-
-            {editMode.isEditing ? (
-              <NavigationEditBar
-                isSaving={editMode.isSaving}
-                isDirty={editMode.isDirty}
-                onSave={editMode.save}
-                onCancel={editMode.cancelEditMode}
-              />
-            ) : (
-              <button
-                type="button"
-                onClick={editMode.enterEditMode}
-                className={cn(
-                  "relative",
-                  "h-10 w-10 group-data-[state=expanded]:w-full",
-                  "flex items-center rounded-md",
-                  "group-data-[state=collapsed]:justify-center",
-                  "group-data-[state=expanded]:-space-x-2",
-                  "font-medium shrink-0 inline-flex select-none",
-                  "text-muted-foreground",
-                  "hover:bg-accent hover:text-accent-foreground",
-                  "transition-[background-color,color,width] duration-100 ease-out",
-                  "focus:!outline-none focus:!ring-0 active:!outline-none active:!ring-0",
-                  "after:pointer-events-none after:absolute after:-inset-[3px] after:rounded-lg after:border after:border-blue-500 after:opacity-0 after:ring-2 after:ring-blue-500/20 after:transition-opacity focus-visible:after:opacity-100 active:after:opacity-0",
-                  "group/item"
-                )}
-              >
-                <LuSettings2 className="absolute left-3 top-3 flex items-center justify-center" />
-                <span
-                  className={cn(
-                    "min-w-[128px] text-sm text-left",
-                    "absolute left-7 group-data-[state=expanded]:left-12",
-                    "opacity-0 group-data-[state=expanded]:opacity-100"
-                  )}
-                >
-                  Customize
-                </span>
-              </button>
-            )}
-          </VStack>
-        </VStack>
+        {editMode.isEditing ? (
+          <NavigationEditBar
+            isSaving={editMode.isSaving}
+            isDirty={editMode.isDirty}
+            onSave={editMode.save}
+            onCancel={editMode.cancelEditMode}
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={editMode.enterEditMode}
+            className="h-9 w-9 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent/40 dark:hover:bg-accent/20 transition-colors shrink-0 outline-none"
+            title="Customize"
+          >
+            <LuSettings2 className="h-4 w-4" />
+          </button>
+        )}
       </nav>
     </div>
   );
@@ -241,26 +157,6 @@ const NavigationIconLink = forwardRef<
   HTMLAnchorElement,
   NavigationIconButtonProps
 >(({ link, isActive = false, isOpen = false, onClick, ...props }, ref) => {
-  const iconClasses = [
-    "absolute left-3 top-3 flex items-center items-center justify-center"
-  ];
-
-  const classes = [
-    "relative",
-    "h-10 w-10 group-data-[state=expanded]:w-full",
-    "flex items-center rounded-md",
-    "group-data-[state=collapsed]:justify-center",
-    "group-data-[state=expanded]:-space-x-2",
-    "font-medium shrink-0 inline-flex items-center justify-center select-none",
-    "disabled:opacity-50",
-    "transition-[background-color,color,width] duration-100 ease-out",
-    "focus:!outline-none focus:!ring-0 active:!outline-none active:!ring-0",
-    "after:pointer-events-none after:absolute after:-inset-[3px] after:rounded-lg after:border after:border-blue-500 after:opacity-0 after:ring-2 after:ring-blue-500/20 after:transition-opacity focus-visible:after:opacity-100 active:after:opacity-0",
-    !isActive && "hover:bg-accent hover:text-accent-foreground",
-    isActive && "bg-active text-active-foreground dark:shadow-button-base",
-    "group/item"
-  ];
-
   return (
     <Link
       role="button"
@@ -269,21 +165,24 @@ const NavigationIconLink = forwardRef<
       to={link.to}
       {...props}
       onClick={onClick}
-      className={cn(classes, props.className)}
+      className={cn(
+        "relative h-9 px-4 flex items-center gap-1.5 rounded-full font-bold text-sm select-none transition-colors duration-200 outline-none z-10 whitespace-nowrap",
+        isActive
+          ? "text-emerald-800 dark:text-emerald-400"
+          : "text-muted-foreground hover:text-foreground hover:bg-accent/40 dark:hover:bg-accent/20",
+        props.className
+      )}
       prefetch="intent"
     >
-      <link.icon className={cn(...iconClasses)} />
-
-      <span
-        aria-hidden={isOpen || undefined}
-        className={cn(
-          "min-w-[128px] text-sm text-left",
-          "absolute left-7 group-data-[state=expanded]:left-12",
-          "opacity-0 group-data-[state=expanded]:opacity-100"
-        )}
-      >
-        {link.name}
-      </span>
+      <link.icon className="h-3.5 w-3.5 shrink-0" />
+      <span>{link.name}</span>
+      {isActive && (
+        <motion.div
+          layoutId="active-nav-pill"
+          className="absolute inset-0 bg-emerald-100 dark:bg-emerald-500/10 border border-emerald-200/50 dark:border-emerald-500/20 rounded-full -z-10"
+          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+        />
+      )}
     </Link>
   );
 });

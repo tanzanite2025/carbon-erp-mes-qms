@@ -34,58 +34,33 @@ export function SortableNavItem({
       ref={setNodeRef}
       style={style}
       className={cn(
-        "relative",
-        "h-10 w-10 group-data-[state=expanded]:w-full",
-        "flex items-center rounded-md",
-        "group-data-[state=collapsed]:justify-center",
-        "group-data-[state=expanded]:-space-x-2",
-        "font-medium shrink-0 inline-flex select-none",
-        "transition-[background-color,color,width] duration-100 ease-out",
-        "hover:bg-accent hover:text-accent-foreground",
-        "border border-transparent",
+        "relative h-9 px-3 flex items-center gap-1.5 rounded-full font-bold text-sm select-none transition-colors duration-200 bg-accent/20 border border-border/40 hover:bg-accent/40",
         isDragging && "opacity-50 border-primary",
         "group/item"
       )}
     >
       {/* Drag handle */}
       <div
-        className={cn(
-          "absolute left-0 top-0 h-full flex items-center pl-1",
-          "opacity-0 group-data-[state=expanded]:opacity-100",
-          "cursor-grab active:cursor-grabbing"
-        )}
+        className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground shrink-0 flex items-center"
         {...attributes}
         {...listeners}
       >
-        <LuGripVertical className="w-3 h-3 text-muted-foreground" />
+        <LuGripVertical className="w-3.5 h-3.5" />
       </div>
 
       {/* Module icon */}
-      <module.icon className="absolute left-8 top-3 flex items-center justify-center" />
+      <module.icon className="h-3.5 w-3.5 shrink-0" />
 
       {/* Module name */}
-      <span
-        className={cn(
-          "min-w-[128px] text-sm",
-          "absolute left-12 group-data-[state=expanded]:left-16",
-          "opacity-0 group-data-[state=expanded]:opacity-100"
-        )}
-      >
-        {module.name}
-      </span>
+      <span className="whitespace-nowrap">{module.name}</span>
 
       {/* Hide button */}
       <button
         type="button"
         onClick={() => onToggleHidden(module.key)}
-        className={cn(
-          "absolute right-2 top-2.5 p-0.5 rounded",
-          "opacity-0 group-data-[state=expanded]:opacity-100",
-          "text-muted-foreground hover:text-foreground",
-          "transition-opacity"
-        )}
+        className="text-muted-foreground hover:text-destructive p-0.5 rounded transition-colors shrink-0 flex items-center"
       >
-        <LuEyeOff className="w-3.5 h-3.5" />
+        <LuEyeOff className="w-3 h-3" />
       </button>
     </div>
   );

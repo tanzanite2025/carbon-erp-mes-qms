@@ -37,6 +37,7 @@ import type { Database } from "./types.ts";
 
 // Load environment variables
 dotenv.config();
+dotenv.config({ path: ".env.local" });
 
 const DEV_PASSWORD = "password";
 const DEV_COMPANY_NAME = "Carbon Development";
@@ -234,7 +235,7 @@ async function seedDev() {
 
       // Create Admin employee type
       const employeeTypeResult = await client.query(
-        `INSERT INTO "employeeType" (name, "companyId", protected, "systemType") VALUES ('Admin', $1, true, 'Admin') RETURNING id`,
+        `INSERT INTO "employeeType" (name, "companyId", protected, "systemType") VALUES ('管理员', $1, true, 'Admin') RETURNING id`,
         [companyId]
       );
       const employeeTypeId = employeeTypeResult.rows[0].id;

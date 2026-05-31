@@ -1,5 +1,4 @@
 import type { Draft } from "immer";
-import invariant from "tiny-invariant";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { getPath, setPath } from "../../utils";
@@ -222,39 +221,41 @@ const createFormState = (
     });
   },
   validate: async () => {
-    const formElement = get().formElement;
-    invariant(
+    const formState = get();
+    if (
+      !formState ||
+      !formState.formElement ||
+      !formState.formProps?.validator
+    ) {
+      return { error: { fieldErrors: {} } };
+    }
+    const {
       formElement,
-      "Cannot find reference to form. This is probably a bug in remix-validated-form."
-    );
-
-    const validator = get().formProps?.validator;
-    invariant(
-      validator,
-      "Cannot find validator. This is probably a bug in remix-validated-form."
-    );
+      formProps: { validator }
+    } = formState;
 
     const result = await validator.validate(new FormData(formElement));
-    if (result.error) get().setFieldErrors(result.error.fieldErrors);
+    if (result.error) formState.setFieldErrors(result.error.fieldErrors);
     return result;
   },
 
   smartValidate: async ({ alwaysIncludeErrorsFromFields = [] } = {}) => {
-    const formElement = get().formElement;
-    invariant(
+    const formState = get();
+    if (
+      !formState ||
+      !formState.formElement ||
+      !formState.formProps?.validator
+    ) {
+      return { error: { fieldErrors: {} } };
+    }
+    const {
       formElement,
-      "Cannot find reference to form. This is probably a bug in remix-validated-form."
-    );
-
-    const validator = get().formProps?.validator;
-    invariant(
-      validator,
-      "Cannot find validator. This is probably a bug in remix-validated-form."
-    );
+      formProps: { validator }
+    } = formState;
 
     await Promise.all(
       alwaysIncludeErrorsFromFields.map((field) =>
-        get().controlledFields.awaitValueUpdate?.(field)
+        formState.controlledFields.awaitValueUpdate?.(field)
       )
     );
 
@@ -263,8 +264,8 @@ const createFormState = (
     );
     if (!validationResult.error) {
       // Only update the field errors if it hasn't changed
-      const hadErrors = Object.keys(get().fieldErrors).length > 0;
-      if (hadErrors) get().setFieldErrors({});
+      const hadErrors = Object.keys(formState.fieldErrors).length > 0;
+      if (hadErrors) formState.setFieldErrors({});
       return validationResult;
     }
 
@@ -280,7 +281,7 @@ const createFormState = (
       incomingErrors.add(field);
     });
 
-    Object.keys(get().fieldErrors).forEach((field) => {
+    Object.keys(formState.fieldErrors).forEach((field) => {
       errorFields.add(field);
       prevErrors.add(field);
     });
@@ -298,7 +299,7 @@ const createFormState = (
       // If an error has changed, we should update it.
       if (prevErrors.has(field) && incomingErrors.has(field)) {
         // Only update if the error has changed to avoid unnecessary rerenders
-        if (fieldErrors[field] !== get().fieldErrors[field])
+        if (fieldErrors[field] !== formState.fieldErrors[field])
           fieldsToUpdate.add(field);
         return;
       }
@@ -312,15 +313,18 @@ const createFormState = (
       // If the error is new, then only update if the field has been touched
       // or if the form has been submitted
       if (!prevErrors.has(field)) {
-        const fieldTouched = get().touchedFields[field];
-        const formHasBeenSubmitted = get().hasBeenSubmitted;
+        const fieldTouched = formState.touchedFields[field];
+        const formHasBeenSubmitted = formState.hasBeenSubmitted;
         if (fieldTouched || formHasBeenSubmitted) fieldsToUpdate.add(field);
         return;
       }
     });
 
     if (fieldsToDelete.size === 0 && fieldsToUpdate.size === 0) {
-      return { ...validationResult, error: { fieldErrors: get().fieldErrors } };
+      return {
+        ...validationResult,
+        error: { fieldErrors: formState.fieldErrors }
+      };
     }
 
     set((state) => {
@@ -333,15 +337,15 @@ const createFormState = (
       });
     });
 
-    return { ...validationResult, error: { fieldErrors: get().fieldErrors } };
+    return {
+      ...validationResult,
+      error: { fieldErrors: formState.fieldErrors }
+    };
   },
 
   submit: () => {
     const formElement = get().formElement;
-    invariant(
-      formElement,
-      "Cannot find reference to form. This is probably a bug in remix-validated-form."
-    );
+    if (!formElement) return;
 
     requestSubmit(formElement);
   },
@@ -584,8 +588,13 @@ export const useRootFormStore = create<FormStoreState>()(
       if (get().forms[formId]) return;
       set((state) => {
         state.forms[formId] = createFormState(
-          (setter) => set((state) => setter(state.forms[formId]!)),
-          () => get().forms[formId]!
+          (setter) =>
+            set((state) => {
+              if (state.forms[formId]) {
+                setter(state.forms[formId]);
+              }
+            }),
+          () => get().forms[formId] ?? defaultFormState
         ) as Draft<FormState>;
       });
     }

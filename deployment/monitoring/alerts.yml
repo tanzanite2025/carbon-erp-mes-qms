@@ -1,0 +1,104 @@
+# Prometheus 告警规则
+
+groups:
+  # 系统告警
+  - name: system_alerts
+    interval: 30s
+    rules:
+      # CPU 使用率过高
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU 使用率过高 (instance {{ $labels.instance }})"
+          description: "CPU 使用率超过 80% (当前: {{ $value }}%)"
+
+      # 内存使用率过高
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "内存使用率过高 (instance {{ $labels.instance }})"
+          description: "内存使用率超过 80% (当前: {{ $value }}%)"
+
+      # 磁盘使用率过高
+      - alert: HighDiskUsage
+        expr: (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|fuse.lxcfs"} / node_filesystem_size_bytes)) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "磁盘使用率过高 (instance {{ $labels.instance }})"
+          description: "磁盘使用率超过 80% (当前: {{ $value }}%)"
+
+  # 数据库告警
+  - name: database_alerts
+    interval: 30s
+    rules:
+      # PostgreSQL 连接数过高
+      - alert: HighPostgresConnections
+        expr: pg_stat_database_numbackends > 150
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "PostgreSQL 连接数过高"
+          description: "当前连接数: {{ $value }}, 最大连接数: 200"
+
+      # PostgreSQL 慢查询
+      - alert: SlowPostgresQueries
+        expr: rate(pg_stat_statements_mean_exec_time[5m]) > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "PostgreSQL 慢查询"
+          description: "平均查询时间超过 1 秒"
+
+      # Redis 内存使用率过高
+      - alert: HighRedisMemory
+        expr: (redis_memory_used_bytes / redis_memory_max_bytes) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Redis 内存使用率过高"
+          description: "Redis 内存使用率超过 80% (当前: {{ $value }}%)"
+
+  # 应用告警
+  - name: application_alerts
+    interval: 30s
+    rules:
+      # 应用响应时间过长
+      - alert: HighResponseTime
+        expr: http_request_duration_seconds{quantile="0.95"} > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "应用响应时间过长 ({{ $labels.app }})"
+          description: "P95 响应时间超过 2 秒 (当前: {{ $value }}s)"
+
+      # 应用错误率过高
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "应用错误率过高 ({{ $labels.app }})"
+          description: "5xx 错误率超过 5% (当前: {{ $value }}%)"
+
+      # 应用不可用
+      - alert: ApplicationDown
+        expr: up{job=~"carbon-.*"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "应用不可用 ({{ $labels.job }})"
+          description: "应用已停止响应"

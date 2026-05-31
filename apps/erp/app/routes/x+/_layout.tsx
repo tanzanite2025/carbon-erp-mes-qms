@@ -221,11 +221,13 @@ export default function AuthenticatedRoute() {
         <CarbonProvider session={session}>
           <RealtimeDataProvider>
             <TooltipProvider>
-              <div className="flex flex-col h-screen">
+              <div className="flex flex-col h-screen overflow-hidden">
                 <Topbar />
-                <div className="flex flex-1 h-[calc(100vh-49px)] relative">
+                <div className="hidden sm:block border-b border-border bg-background px-4">
                   <PrimaryNavigation />
-                  <main className="flex-1 overflow-y-auto scrollbar-hide border-l border-t bg-muted sm:rounded-tl-2xl relative z-10">
+                </div>
+                <div className="flex-1 overflow-hidden relative">
+                  <main className="h-full overflow-y-auto scrollbar-hide border-t bg-muted sm:rounded-tl-2xl relative z-10">
                     <Outlet />
                   </main>
                 </div>

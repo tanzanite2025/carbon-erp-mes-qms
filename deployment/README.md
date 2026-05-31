@@ -9,14 +9,33 @@
 ```
 deployment/
 ├── README.md                    # 本文件
+├── 部署改进实施总结.md          # 改进实施总结
 ├── .env.prod.example            # 生产环境变量模板
-├── docker-compose.prod.yml      # 生产环境 Docker Compose
+├── docker-compose.prod.yml      # 生产环境 Docker Compose（完整版）
 ├── nginx/
-│   ├── nginx.conf               # Nginx 主配置
+│   ├── nginx.conf               # Nginx 主配置（优化版）
 │   └── sites/
 │       ├── erp.conf             # ERP 站点配置
 │       ├── mes.conf             # MES 站点配置
 │       └── api.conf             # API 站点配置
+├── postgres/
+│   └── postgresql.conf          # PostgreSQL 优化配置
+├── redis/
+│   └── redis.conf               # Redis 持久化配置
+├── pgbouncer/
+│   ├── pgbouncer.ini            # PgBouncer 连接池配置
+│   └── userlist.txt             # 用户列表模板
+├── kong/
+│   └── kong.yml                 # Kong API Gateway 配置
+├── monitoring/
+│   ├── docker-compose.yml       # 监控服务（Prometheus + Grafana）
+│   ├── prometheus.yml           # Prometheus 配置
+│   ├── alerts.yml               # 告警规则
+│   └── grafana/
+│       ├── dashboards/
+│       │   └── dashboard.yml    # Dashboard 配置
+│       └── datasources/
+│           └── prometheus.yml   # 数据源配置
 ├── pm2/
 │   └── ecosystem.config.js      # PM2 配置
 ├── systemd/
@@ -26,7 +45,11 @@ deployment/
     ├── deploy.sh                # 一键部署脚本
     ├── backup-db.sh             # 数据库备份脚本
     ├── restore-db.sh            # 数据库恢复脚本
-    └── health-check.sh          # 健康检查脚本
+    ├── health-check.sh          # 健康检查脚本
+    ├── check-env.sh             # 环境变量验证脚本（新增）
+    ├── monitor.sh               # 系统监控脚本（新增）
+    ├── rollback.sh              # 回滚脚本（新增）
+    └── blue-green-deploy.sh     # 蓝绿部署脚本（新增）
 ```
 
 ---
@@ -113,6 +136,10 @@ cp deployment/.env.prod.example .env
 # 编辑环境变量
 nano .env
 
+# 验证环境变量（新增）
+source .env
+./deployment/scripts/check-env.sh
+
 # 安装依赖
 pnpm install
 
@@ -164,21 +191,162 @@ sudo certbot --nginx \
 sudo certbot renew --dry-run
 ```
 
-### 8. 配置自动备份
+### 8. 配置自动备份和监控
 
 ```bash
 # 添加 cron 任务
 crontab -e
 
-# 添加以下行（每天凌晨 2 点备份）
+# 添加以下行
+# 每天凌晨 2 点备份数据库
 0 2 * * * /home/ubuntu/carbon/deployment/scripts/backup-db.sh
+
+# 每 5 分钟运行一次监控（新增）
+*/5 * * * * /home/ubuntu/carbon/deployment/scripts/monitor.sh
 ```
 
-### 9. 健康检查
+### 9. 启动监控服务（新增）
+
+```bash
+# 启动 Prometheus + Grafana
+cd deployment/monitoring
+docker compose up -d
+
+# 查看状态
+docker compose ps
+
+# 访问监控面板
+# Prometheus: http://your-server-ip:9090
+# Grafana: http://your-server-ip:3001 (默认: admin/admin)
+```
+
+### 10. 健康检查
 
 ```bash
 # 运行健康检查
 ./deployment/scripts/health-check.sh
+
+# 运行系统监控
+./deployment/scripts/monitor.sh
+```
+
+---
+
+## 🚀 高级功能
+
+### 蓝绿部署
+
+零停机部署，自动回滚：
+
+```bash
+# 执行蓝绿部署
+./deployment/scripts/blue-green-deploy.sh
+
+# 脚本会自动：
+# 1. 拉取最新代码
+# 2. 构建新版本
+# 3. 启动新版本（不同端口）
+# 4. 健康检查
+# 5. 切换 Nginx 上游
+# 6. 停止旧版本
+```
+
+### 快速回滚
+
+回滚到任意版本：
+
+```bash
+# 回滚到上一个版本
+./deployment/scripts/rollback.sh HEAD~1
+
+# 回滚到指定 commit
+./deployment/scripts/rollback.sh abc123
+
+# 回滚到指定 tag
+./deployment/scripts/rollback.sh v1.0.0
+
+# 可选：同时回滚数据库
+# 脚本会提示选择备份文件
+```
+
+### 系统监控
+
+实时监控系统状态：
+
+```bash
+# 运行监控脚本
+./deployment/scripts/monitor.sh
+
+# 输出示例：
+# ✅ CPU: 45.2%
+# ✅ 内存: 62.8%
+# ✅ 磁盘: 38%
+# ✅ carbon-erp: 125ms
+# ✅ carbon-mes: 98ms
+# ✅ PostgreSQL: 45 连接
+# ✅ Redis: 128MB
+# ✅ Nginx: 运行中
+```
+
+### 环境变量验证
+
+部署前验证配置：
+
+```bash
+# 加载环境变量
+source .env
+
+# 运行验证
+./deployment/scripts/check-env.sh
+
+# 检查项：
+# - 必需变量是否存在
+# - 密码强度（至少 32 字符）
+# - 默认值是否被修改
+# - Redis 连接测试
+# - 数据库连接测试
+```
+
+### PgBouncer 连接池
+
+提升数据库性能：
+
+```bash
+# 1. 生成密码哈希
+echo -n "your-passwordpostgres" | md5sum
+
+# 2. 编辑用户列表
+nano deployment/pgbouncer/userlist.txt
+# 添加: "postgres" "md5<hash>"
+
+# 3. 启动 PgBouncer（已包含在 docker-compose.prod.yml）
+docker compose -f deployment/docker-compose.prod.yml up -d pgbouncer
+
+# 4. 应用连接到 PgBouncer
+# 修改 .env 中的数据库连接：
+# SUPABASE_DB_URL=postgresql://postgres:password@localhost:6432/postgres
+```
+
+### Prometheus + Grafana 监控
+
+完整的监控和可视化：
+
+```bash
+# 启动监控服务
+cd deployment/monitoring
+docker compose up -d
+
+# 访问 Prometheus
+# http://your-server-ip:9090
+
+# 访问 Grafana
+# http://your-server-ip:3001
+# 默认账号: admin/admin
+
+# 导入推荐 Dashboard：
+# - Node Exporter Full (ID: 1860)
+# - PostgreSQL Database (ID: 9628)
+# - Redis Dashboard (ID: 11835)
 ```
 
 ---
@@ -204,8 +372,17 @@ sudo systemctl status nginx
 ### 更新应用
 
 ```bash
-# 使用一键部署脚本
+# 方式 1: 使用一键部署脚本
 ./deployment/scripts/deploy.sh
+
+# 方式 2: 使用蓝绿部署（推荐，零停机）
+./deployment/scripts/blue-green-deploy.sh
+
+# 方式 3: 手动更新
+git pull origin main
+pnpm install
+pnpm build
+pm2 restart all
 ```
 
 ### 重启服务
@@ -239,6 +416,11 @@ sudo tail -f /var/log/nginx/erp-error.log
 # Docker 日志
 docker compose logs -f postgres
 docker compose logs -f storage
+
+# 监控日志
+cd deployment/monitoring
+docker compose logs -f prometheus
+docker compose logs -f grafana
 ```
 
 ---

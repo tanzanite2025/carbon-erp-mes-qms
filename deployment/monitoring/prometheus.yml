@@ -1,0 +1,63 @@
+# Prometheus 配置文件
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'carbon-production'
+    environment: 'production'
+
+# 告警规则文件
+rule_files:
+  - 'alerts.yml'
+
+# 抓取配置
+scrape_configs:
+  # Prometheus 自身
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Node Exporter (系统指标)
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          instance: 'carbon-server'
+
+  # PostgreSQL Exporter
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+        labels:
+          instance: 'carbon-postgres'
+
+  # Redis Exporter
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+        labels:
+          instance: 'carbon-redis'
+
+  # Carbon ERP 应用
+  - job_name: 'carbon-erp'
+    static_configs:
+      - targets: ['host.docker.internal:4000']
+        labels:
+          app: 'erp'
+          instance: 'carbon-erp'
+
+  # Carbon MES 应用
+  - job_name: 'carbon-mes'
+    static_configs:
+      - targets: ['host.docker.internal:4001']
+        labels:
+          app: 'mes'
+          instance: 'carbon-mes'
+
+  # Nginx
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['host.docker.internal:9113']
+        labels:
+          instance: 'carbon-nginx'

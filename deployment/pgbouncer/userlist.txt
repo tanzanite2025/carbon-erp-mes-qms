@@ -1,0 +1,11 @@
+# PgBouncer 用户列表
+# 格式: "username" "password_hash"
+#
+# 生成密码哈希:
+#   echo -n "passwordusername" | md5sum
+#   然后在结果前加上 "md5" 前缀
+#
+# 示例:
+#   "postgres" "md5d8578edf8458ce06fbc5bb76a58c5ca4"
+#
+# 请在部署时替换为实际的用户和密码哈希
